@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using DigitalQ.Domain.Interfaces;
+using DigitalQ.Domain.Interfaces.Repos;
 using DigitalQ.Domain.Models;
 using DigitalQ.Infra.Data.Db;
 
@@ -14,10 +14,10 @@ namespace DigitalQ.Infra.Data.Repositorios
         }
         public async Task<IEnumerable<Usuario>> SelectAllAsync()
         {
-            return await _session.Connection.QueryAsync<Usuario>("SELECT * FROM tbl_reserva", 
+            return await _session.Connection.QueryAsync<Usuario>("SELECT * FROM tbl_usuario", 
                                                                  null, _session.Transaction);
         }
-        public async Task InsertAsync(Usuario reserva)
+        public async Task InsertAsync(Usuario user)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace DigitalQ.Infra.Data.Repositorios
                     //StatusReserva = reserva.StatusReserva
                 };
 
-                int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_reserva 
+                int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_usuario 
                                                                    (Id, IdEstabelecimento, IdUsuario DataHoraReserva, 
                                                                    QtdePessoas, StatusReserva) 
                                                                    values(@Id, @IdUsuario, @IdEstabelecimento, @DataHoraReserva, 

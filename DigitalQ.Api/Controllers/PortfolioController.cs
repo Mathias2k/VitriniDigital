@@ -2,7 +2,7 @@
 
 namespace DigitalQ.Controllers
 {
-    public class FilaController : Controller
+    public class PortfolioController : Controller
     {
         public IActionResult Index()
         {

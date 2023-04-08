@@ -1,5 +1,7 @@
 ﻿using DigitalQ.Domain.Config;
 using DigitalQ.Domain.Interfaces;
+using DigitalQ.Domain.Interfaces.Business;
+using DigitalQ.Domain.Interfaces.Repos;
 using DigitalQ.Infra.Data.Db;
 using DigitalQ.Infra.Data.Repositorios;
 using DigitalQ.Service.Business;
@@ -16,6 +18,7 @@ namespace Digital.CrossCutting.Register
         {
             services.AddScoped<DbSession>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 
             services.Configure<ApiConfiguration>(configuration.GetSection("ApiConfiguration"));

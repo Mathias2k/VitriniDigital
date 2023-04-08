@@ -1,7 +1,6 @@
 using DigitalQ.Domain.DTO;
-using DigitalQ.Domain.Interfaces;
+using DigitalQ.Domain.Interfaces.Business;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.ConstrainedExecution;
 
 namespace DigitalQ.Controllers
 {
@@ -10,41 +9,41 @@ namespace DigitalQ.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;
-        //private readonly IReservaService _reservaService;
-        public UsuarioController(ILogger<UsuarioController> logger
-                                //, 
-                                 //IReservaService reservaService
+        private readonly IUsuarioService _usuarioService;
+        public UsuarioController(ILogger<UsuarioController> logger,
+                                 IUsuarioService usuarioService
             )
         {
             _logger = logger;
-            //_reservaService = reservaService;
+            _usuarioService = usuarioService;
         }
 
-        [HttpGet(Name = "GetReserva")]
+        [HttpGet(Name = "GetUsuario")]
         public async Task<IActionResult> Get()
         {
-            //var ret = _reservaService.GetAllReservaAsync();
-            return Ok();
+            var ret = await _usuarioService.GetAllUsuariosAsync();
+            return Ok(ret);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (id == 0)
-                return BadRequest();
+            var ret = await _usuarioService.GetUsuarioByIdAsync(id);
 
-            return Ok();
+            return Ok(ret);
         }
 
         [HttpPost(Name = "PostUsuario")]
-        public async Task<IActionResult> Post(ReservaDTO reserva)
+        public async Task<IActionResult> Post(UsuarioDTO user)
         {
-            ArgumentNullException.ThrowIfNull(reserva);
-            if (reserva.QtdePessoas <= 0)
-                return BadRequest("A qtde de convidados deve ser maior que 0.");
+            if (user == null)
+                return BadRequest();
 
-            //await _reservaService.AddReservaAsync(reserva);
-            return Ok();
+            var ret = await _usuarioService.AddUsuarioAsync(user);
+            if (ret)
+                return Ok();
+
+            return BadRequest();
         }
 
         [HttpPut(Name = "PutUsuario")]
