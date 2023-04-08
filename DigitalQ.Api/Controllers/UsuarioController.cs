@@ -20,7 +20,7 @@ namespace DigitalQ.Controllers
             //_reservaService = reservaService;
         }
 
-        [HttpGet(Name = "GetUsuario")]
+        [HttpGet(Name = "GetReserva")]
         public async Task<IActionResult> Get()
         {
             //var ret = _reservaService.GetAllReservaAsync();
