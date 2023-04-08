@@ -13,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRouting();
 builder.Services.AddHttpClient();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
