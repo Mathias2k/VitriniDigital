@@ -43,7 +43,7 @@ namespace DigitalQ.Controllers
             if (reserva.QtdePessoas <= 0)
                 return BadRequest("A qtde de convidados deve ser maior que 0.");
 
-            //await _reservaService.AddReservaAsync(reserva);
+            //await _reservaService.AddReservaAsync();
             return Ok();
         }
 
