@@ -2,7 +2,7 @@
 
 namespace DigitalQ.Domain.Interfaces
 {
-    public interface IReservaRepository
+    public interface IUsuarioRepository
     {
         //Task<IEnumerable<Reserva>> SelectAllAsync();
         //Task InsertAsync(Reserva model);

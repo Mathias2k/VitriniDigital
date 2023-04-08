@@ -5,10 +5,10 @@ using DigitalQ.Infra.Data.Db;
 
 namespace DigitalQ.Infra.Data.Repositorios
 {
-    public class ReservaRepository : IReservaRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private DbSession _session;
-        public ReservaRepository(DbSession session)
+        public UsuarioRepository(DbSession session)
         {
             _session = session;
         }

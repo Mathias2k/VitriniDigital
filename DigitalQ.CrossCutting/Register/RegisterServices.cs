@@ -16,7 +16,7 @@ namespace Digital.CrossCutting.Register
         {
             services.AddScoped<DbSession>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IReservaRepository, ReservaRepository>();
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 
             services.Configure<ApiConfiguration>(configuration.GetSection("ApiConfiguration"));
             services.AddScoped(cfg => cfg.GetService<IOptions<ApiConfiguration>>().Value);
