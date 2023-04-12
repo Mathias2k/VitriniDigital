@@ -1,4 +1,6 @@
-﻿namespace VitriniDigital.Domain.Interfaces
+﻿using System;
+
+namespace VitriniDigital.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

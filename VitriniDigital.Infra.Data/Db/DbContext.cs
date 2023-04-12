@@ -1,6 +1,7 @@
 ﻿using VitriniDigital.Domain.Config;
 using System.Data;
 using System.Data.SqlClient;
+using System;
 
 namespace VitriniDigital.Infra.Data.Db
 {

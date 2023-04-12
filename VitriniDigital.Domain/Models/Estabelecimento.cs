@@ -1,5 +1,7 @@
 ﻿using VitriniDigital.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
 
 namespace VitriniDigital.Domain.Models
 {
