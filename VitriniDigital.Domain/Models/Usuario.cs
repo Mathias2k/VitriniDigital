@@ -1,5 +1,6 @@
 ﻿using VitriniDigital.Domain.DTO;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace VitriniDigital.Domain.Models
 {

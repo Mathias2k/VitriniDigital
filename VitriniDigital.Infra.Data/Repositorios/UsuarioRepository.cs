@@ -1,4 +1,7 @@
 ﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
 using VitriniDigital.Infra.Data.Db;

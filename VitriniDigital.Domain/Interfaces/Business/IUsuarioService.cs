@@ -1,4 +1,7 @@
-﻿using VitriniDigital.Domain.DTO;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Domain.Interfaces.Business
