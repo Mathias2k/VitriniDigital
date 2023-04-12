@@ -19,7 +19,7 @@ namespace VitriniDigital.Controllers
             _usuarioService = usuarioService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Name = "GetUsuario")]
         public async Task<IActionResult> Get()
         {

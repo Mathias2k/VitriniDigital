@@ -18,8 +18,11 @@ namespace Digital.CrossCutting.Register
         {
             services.AddScoped<DbSession>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IUsuarioService, UsuarioService>();
+
+            services.AddTransient<IUsuarioService, UsuarioService>();            
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IPortfolioService, PortfolioService>();
+            services.AddTransient<IPortfolioRepository, PortfolioRepository>();
 
             services.Configure<ApiConfiguration>(configuration.GetSection("ApiConfiguration"));
             services.AddScoped(cfg => cfg.GetService<IOptions<ApiConfiguration>>().Value);
