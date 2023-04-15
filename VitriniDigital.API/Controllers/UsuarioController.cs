@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace VitriniDigital.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;

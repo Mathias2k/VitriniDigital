@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VitriniDigital.Domain.DTO
+namespace VitriniDigital.Domain.Interfaces.Business
 {
-    public class PortfolioDTO
+    public interface IImagemService
     {
-        public int MyProperty { get; set; }
     }
 }

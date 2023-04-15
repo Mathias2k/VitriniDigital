@@ -6,7 +6,7 @@ using VitriniDigital.Domain.Interfaces.Business;
 namespace VitriniDigital.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PortfolioController : ControllerBase
     {
         private readonly ILogger<PortfolioController> _logger;
@@ -36,12 +36,12 @@ namespace VitriniDigital.Controllers
         }
 
         [HttpPost(Name = "PostPortfolio")]
-        public async Task<IActionResult> Post(PortfolioDTO user)
+        public async Task<IActionResult> Post([FromBody]PortfolioDTO portfolio)
         {
-            if (user == null)
+            if (portfolio == null)
                 return BadRequest();
 
-            var ret = await _portfolioService.AddPortfolioAsync(user);
+            var ret = await _portfolioService.AddPortfolioAsync(portfolio);
             if (ret)
                 return Ok();
 

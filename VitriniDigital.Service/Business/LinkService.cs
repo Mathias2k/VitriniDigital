@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VitriniDigital.Domain.DTO
+namespace VitriniDigital.Service.Business
 {
-    public class PortfolioDTO
+    public class LinkService
     {
-        public int MyProperty { get; set; }
     }
 }

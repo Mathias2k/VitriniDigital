@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VitriniDigital.Domain.DTO
 {
-    public class PortfolioDTO
+    public class ImagemDTO
     {
         public int MyProperty { get; set; }
     }

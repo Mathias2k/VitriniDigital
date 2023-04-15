@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VitriniDigital.Domain.DTO
+namespace VitriniDigital.Infra.Data.Repositorios
 {
-    public class PortfolioDTO
+    public class ImagemRepository
     {
-        public int MyProperty { get; set; }
     }
 }
