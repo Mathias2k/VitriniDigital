@@ -20,9 +20,16 @@ namespace Digital.CrossCutting.Register
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddTransient<IUsuarioService, UsuarioService>();            
-            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
             services.AddTransient<IPortfolioService, PortfolioService>();
+            services.AddTransient<IImagemService, ImagemService>();
+            services.AddTransient<ILinkService, LinkService>();
+            services.AddTransient<IEstabelecimentoService, EstabelecimentoService>();
+
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
             services.AddTransient<IPortfolioRepository, PortfolioRepository>();
+            services.AddTransient<IImagemRepository, ImagemRepository>();
+            services.AddTransient<ILinkRepository, LinkRepository>();
+            services.AddTransient<IReviewRepository, ReviewRepository>();
 
             services.Configure<ApiConfiguration>(configuration.GetSection("ApiConfiguration"));
             services.AddScoped(cfg => cfg.GetService<IOptions<ApiConfiguration>>().Value);

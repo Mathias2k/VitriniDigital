@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VitriniDigital.Domain.Interfaces.Business
+namespace VitriniDigital.Domain.Interfaces.Repos
 {
-    public interface IEstabelecimentoService
+    public interface IImagemRepository
     {
     }
 }
