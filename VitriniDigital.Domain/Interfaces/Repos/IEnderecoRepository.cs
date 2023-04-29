@@ -10,5 +10,7 @@ namespace VitriniDigital.Domain.Interfaces.Repos
         Task<int> InsertAsync(EnderecoDTO end);
         Task<Endereco> SelectByIdAsync(int idEnd);
         Task<IEnumerable<Endereco>> SelectAllAsync();
+        Task<int> UpdateAsync(int id, EnderecoDTO end);
+        Task<int> DeleteAsync(int id);
     }
 }

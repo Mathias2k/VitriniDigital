@@ -17,10 +17,17 @@ namespace VitriniDigital.Service.Business
         {
             return await _enderecoRepo.InsertAsync(endDto);
         }
-
         public async Task<Endereco> GetEnderecoByIdAsync(int idEnd)
         {
             return await _enderecoRepo.SelectByIdAsync(idEnd);
+        }
+        public async Task UpdateEnderecoAsync(int id, EnderecoDTO endDto)
+        {
+             await _enderecoRepo.UpdateAsync(id, endDto);
+        }
+        public async Task DeleteEnderecoAsync(int id)
+        {
+            await _enderecoRepo.DeleteAsync(id);
         }
     }
 }

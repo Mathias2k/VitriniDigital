@@ -5,19 +5,19 @@ namespace VitriniDigital.Domain.DTO
 {
     public class EstabelecimentoDTO 
     {
-        [Required]
+        [Required(ErrorMessage = "Nome do estabelecimento é obrigatório")]
         public string Nome { get; set; }
 
         [Required]
         public EnumTipoEstabelecimento TipoEstabelecimento { get; set; }
 
-        [Required(ErrorMessage = "The email address is required")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [Required(ErrorMessage = "Endereço de email é obrigatório")]
+        [EmailAddress(ErrorMessage = "Endereço de email inválido")]
         public string Email { get; set; }
         public string Telefone1 { get; set; }
         public string Telefone2 { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Endereço é obrigatório")]
         public EnderecoDTO EnderecoDto { get; set; }
     }
 }

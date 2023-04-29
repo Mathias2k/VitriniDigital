@@ -71,5 +71,63 @@ namespace VitriniDigital.Infra.Data.Repositorios
                 throw;
             }
         }
+        public async Task<int> UpdateAsync(int id, EnderecoDTO end)
+        {
+            try
+            {
+                var param = new
+                {
+                    ID = id,
+                    Logradouro = end.Logradouro,
+                    CEP = end.CEP,
+                    Complemento = end.Complemento,
+                    Numero = end.Numero,
+                    PontoReferencia = end.PontoReferencia,
+                    Cidade = end.Cidade,
+                    Bairro = end.Bairro,
+                    UF = end.UF,
+                    Latitude = end.Latitude,
+                    Longitude = end.Longitude
+                };
+
+                return await _session.Connection.ExecuteAsync(@"update tbl_Endereco
+                                                                set Logradouro = @Logradouro,
+                                                                	CEP = @CEP,
+                                                                	Complemento = @Complemento,
+                                                                	Numero = @Numero,
+                                                                	PontoReferencia = @PontoReferencia,
+                                                                	Cidade = @Cidade,
+                                                                	Bairro = @Bairro,
+                                                                	UF = @UF,
+                                                                	Latitude = @Latitude,
+                                                                	Longitude = @Longitude
+                                                                where Id = @ID",
+                                                                param, _session.Transaction);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("EnderecoRepository.UpdateAsync - ", ex);
+                throw;
+            }
+        }
+        public async Task<int> DeleteAsync(int id)
+        {
+            try
+            {
+                var param = new
+                {
+                    ID = id,
+                };
+
+                return await _session.Connection.ExecuteAsync(@"delete from tbl_Endereco
+                                                                where Id = @ID",
+                                                                param, _session.Transaction);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("EnderecoRepository.DeleteAsync - ", ex);
+                throw;
+            }
+        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Models;
 
@@ -12,5 +8,7 @@ namespace VitriniDigital.Domain.Interfaces.Business
     {
         Task<int> AddEnderecoAsync(EnderecoDTO endDto);
         Task<Endereco> GetEnderecoByIdAsync(int idEnd);
+        Task UpdateEnderecoAsync(int id, EnderecoDTO endDto);
+        Task DeleteEnderecoAsync(int id);
     }
 }

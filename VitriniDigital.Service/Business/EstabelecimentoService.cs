@@ -55,7 +55,10 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<ResponseResult> UpdateEstabelecimentoAsync(int id, EstabelecimentoDTO estabDto)
         {
+            var estabelecimento = await GetEstabelecimentosByIdAsync(id);
             var retorno = await _estabelecimentoRepo.UpdateAsync(id, estabDto);
+
+            await _enderecoService.UpdateEnderecoAsync(estabelecimento.IdEndereco, estabDto.EnderecoDto);
 
             ResponseResult response = new()
             {
@@ -67,7 +70,10 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<ResponseResult> DeleteEstabelecimentoAsync(int id)
         {
+            var estabelecimento = await GetEstabelecimentosByIdAsync(id);
             var retorno = await _estabelecimentoRepo.DeleteAsync(id);
+
+            await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
 
             ResponseResult response = new()
             {
