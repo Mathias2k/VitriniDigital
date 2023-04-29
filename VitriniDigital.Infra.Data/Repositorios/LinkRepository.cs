@@ -7,7 +7,7 @@ using VitriniDigital.Domain.Interfaces.Repos;
 
 namespace VitriniDigital.Infra.Data.Repositorios
 {
-    public class EstabelecimentoRepository : IEstabelecimentoRepository
+    public class LinkRepository : ILinkRepository
     {
     }
 }

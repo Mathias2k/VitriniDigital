@@ -2,6 +2,8 @@ using Digital.CrossCutting.Register;
 using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
 using Keycloak.AuthServices.Sdk.Admin;
+using Microsoft.OpenApi.Models;
+using VitriniDigital.CrossCutting.Register;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,19 @@ builder.Services
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "VitriniDigital.API", Version = "v1" });
+    c.OperationFilter<SwaggerFileOperationFilter>();
+});
+
+builder.Services.AddCors(o => o.AddPolicy("DVPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
 
 var authenticationOptions = builder
                             .Configuration
@@ -44,6 +58,9 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
+
+app.UseRouting();
+app.UseCors("DVPolicy");
 
 app.UseHttpsRedirection();
 

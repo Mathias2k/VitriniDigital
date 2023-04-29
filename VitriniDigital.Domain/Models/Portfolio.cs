@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VitriniDigital.Domain.Models
 {
@@ -11,7 +12,8 @@ namespace VitriniDigital.Domain.Models
     {
         public Guid Id { get; set; }
         public Guid IdEstabelecimento { get; set; }
-        public List<UrlImagem> UrlsImagens { get; set; }
+        public List<Imagem> Imagens { get; set; }
+        public List<Link> Links { get; set; }
         public static class PortfolioFactory
         {
             public static Portfolio AdicionarPortfolio(PortfolioDTO portfolioDto)
@@ -27,13 +29,17 @@ namespace VitriniDigital.Domain.Models
             }
         }
     }
-
-    public class UrlImagem
+    public class Imagem
     {
         public Guid Id { get; set; }
         public Guid IdPortfolio { get; set; }
         public string Urls { get; set; }
-        public byte[] Imagem { get; set; } //talvez List<byte[]>
+        public byte[] Image { get; set; } //byte ou base64
     }
-
+    public class Link
+    {
+        public Guid Id { get; set; }
+        public Guid IdPortfolio { get; set; }
+        public string Url { get; set; }
+    }
 }

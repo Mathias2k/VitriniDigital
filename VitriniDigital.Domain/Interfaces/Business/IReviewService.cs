@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VitriniDigital.Domain.Interfaces.Business
 {
-    internal interface IReviewService
+    public interface IReviewService
     {
     }
 }

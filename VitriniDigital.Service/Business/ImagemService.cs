@@ -7,7 +7,7 @@ using VitriniDigital.Domain.Interfaces.Business;
 
 namespace VitriniDigital.Service.Business
 {
-    public class EstabelecimentoService : IEstabelecimentoService
+    public class ImagemService : IImagemService
     {
     }
 }

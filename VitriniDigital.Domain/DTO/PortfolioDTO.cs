@@ -8,5 +8,6 @@ namespace VitriniDigital.Domain.DTO
 {
     public class PortfolioDTO
     {
+        public int MyProperty { get; set; }
     }
 }
