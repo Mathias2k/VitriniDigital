@@ -22,6 +22,13 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SwaggerFileOperationFilter>();
 });
 
+builder.Services.AddCors(o => o.AddPolicy("DVPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+
 var authenticationOptions = builder
                             .Configuration
                             .GetSection(KeycloakAuthenticationOptions.Section)
@@ -51,6 +58,9 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
+
+app.UseRouting();
+app.UseCors("DVPolicy");
 
 app.UseHttpsRedirection();
 
