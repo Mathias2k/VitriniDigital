@@ -23,10 +23,12 @@ namespace VitriniDigital.Controllers
         [HttpGet(Name = "GetUsuario")]
         public async Task<IActionResult> Get()
         {
-            var ret = await _usuarioService.GetAllUsuariosAsync();
-            return Ok(ret);
+            return Ok();
+            //var ret = await _usuarioService.GetAllUsuariosAsync();
+            //return Ok(ret);
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -35,6 +37,7 @@ namespace VitriniDigital.Controllers
             return Ok(ret);
         }
 
+        [Authorize]
         [HttpPost(Name = "PostUsuario")]
         public async Task<IActionResult> Post(UsuarioDTO user)
         {
@@ -48,12 +51,14 @@ namespace VitriniDigital.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPut(Name = "PutUsuario")]
         public async Task<IActionResult> Put()
         {
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete(Name = "DeleteUsuario")]
         public async Task<IActionResult> Delete()
         {

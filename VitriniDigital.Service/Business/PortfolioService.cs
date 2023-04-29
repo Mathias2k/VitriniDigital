@@ -15,10 +15,10 @@ namespace VitriniDigital.Service.Business
         {
             _PortfolioRepo = PortfolioRepo;
         }
-        public async Task<bool> AddPortfolioAsync(PortfolioDTO userDto)
+        public async Task<bool> AddPortfolioAsync(PortfolioDTO portfolioDto)
         {
-            var reserva = Portfolio.PortfolioFactory.AdicionarPortfolio(userDto);
-            await _PortfolioRepo.InsertAsync(reserva);
+            var portfolio = Portfolio.PortfolioFactory.AdicionarPortfolio(portfolioDto.IdEstabelecimento);
+            await _PortfolioRepo.InsertAsync(portfolio);
 
             return true;
         }

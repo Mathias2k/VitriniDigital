@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VitriniDigital.Domain.DTO
 {
     public class PortfolioDTO
     {
-        public int MyProperty { get; set; }
+        public int IdEstabelecimento { get; set; }
+        //[Write(false)]
+        public List<ImagemDTO> ImagensDto { get; set; }
+
+        //[Write(false)]
+        public List<LinkDTO> LinksDto { get; set; }
     }
 }

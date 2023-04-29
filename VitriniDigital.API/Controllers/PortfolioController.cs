@@ -27,6 +27,7 @@ namespace VitriniDigital.Controllers
             return Ok(ret);
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -35,6 +36,7 @@ namespace VitriniDigital.Controllers
             return Ok(ret);
         }
 
+        [Authorize]
         [HttpPost(Name = "PostPortfolio")]
         public async Task<IActionResult> Post([FromBody]PortfolioDTO portfolio)
         {
@@ -48,12 +50,14 @@ namespace VitriniDigital.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPut(Name = "PutPortfolio")]
         public async Task<IActionResult> Put()
         {
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete(Name = "DeletePortfolio")]
         public async Task<IActionResult> Delete()
         {

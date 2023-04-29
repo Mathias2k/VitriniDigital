@@ -1,14 +1,10 @@
-﻿using Dapper.Contrib.Extensions;
-
-namespace VitriniDigital.Domain.Models
+﻿namespace VitriniDigital.Domain.DTO
 {
-    public class Endereco
+    public class EnderecoDTO
     {
-        [Key]
-        public int Id { get; set; }
         public string Logradouro { get; set; } //rua, av, etc
         public string CEP { get; set; }
-        public string Complemento { get; set; } 
+        public string Complemento { get; set; }
         public string Numero { get; set; }
         public string PontoReferencia { get; set; }
         public string Cidade { get; set; }

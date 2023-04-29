@@ -29,7 +29,6 @@ namespace VitriniDigital.Domain.Models
             if (idade < 18)
                 throw new Exception("Menor de idade.");
         }
-
         public static class UsuarioFactory
         {
             public static Usuario AdicionarUsuario(UsuarioDTO usuarioDto)

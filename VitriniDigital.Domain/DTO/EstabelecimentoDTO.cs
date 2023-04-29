@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using VitriniDigital.Domain.Enum;
-using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Domain.DTO
 {
-    public class EstabelecimentoDTO : Endereco
+    public class EstabelecimentoDTO 
     {
         [Required]
         public string Nome { get; set; }
-        public EnumTipoEstabelecimento TipoEstabelecimento { get; set; }
-        public Portfolio Portfolio { get; set; } //1-1
 
-        [EmailAddress]
-        public string Email { get; private set; }
-        //public string DDD { get; private set; }
-        public List<string> Telefones { get; set; }
+        [Required]
+        public EnumTipoEstabelecimento TipoEstabelecimento { get; set; }
+
+        [Required(ErrorMessage = "The email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+        public string Telefone1 { get; set; }
+        public string Telefone2 { get; set; }
+
+        [Required]
+        public EnderecoDTO EnderecoDto { get; set; }
     }
 }

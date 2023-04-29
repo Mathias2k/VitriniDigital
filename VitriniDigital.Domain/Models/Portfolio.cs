@@ -5,41 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Dapper.Contrib.Extensions;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Portfolio
     {
-        public Guid Id { get; set; }
-        public Guid IdEstabelecimento { get; set; }
-        public List<Imagem> Imagens { get; set; }
-        public List<Link> Links { get; set; }
+        public int Id { get; private set; }
+        public int IdEstabelecimento { get; private set; }
+
+        //[Write(false)]
+        //public List<Imagem> Imagens { get; private set; }
+
+        //[Write(false)]
+        //public List<Link> Links { get; private set; }
         public static class PortfolioFactory
         {
-            public static Portfolio AdicionarPortfolio(PortfolioDTO portfolioDto)
+            public static Portfolio AdicionarPortfolio(int idEstabelecimento)
             {
                 var portfolio = new Portfolio
                 {
-                    Id = Guid.NewGuid(),
-                    //IdEstabelecimento = portfolioDto.IdEstabelecimento,
-                    //UrlsImagens.AddRange(portfolioDto.UrlsImagens)
+                    IdEstabelecimento = idEstabelecimento
                 };
 
                 return portfolio;
             }
         }
-    }
-    public class Imagem
-    {
-        public Guid Id { get; set; }
-        public Guid IdPortfolio { get; set; }
-        public string Urls { get; set; }
-        public byte[] Image { get; set; } //byte ou base64
-    }
-    public class Link
-    {
-        public Guid Id { get; set; }
-        public Guid IdPortfolio { get; set; }
-        public string Url { get; set; }
     }
 }
