@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using VitriniDigital.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Models;
 using VitriniDigital.Domain.Models.Response;
-using VitriniDigital.Service.Business;
 
 namespace VitriniDigital.API.Controllers
 {
