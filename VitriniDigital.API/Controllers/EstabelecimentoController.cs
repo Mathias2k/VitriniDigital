@@ -26,6 +26,8 @@ namespace VitriniDigital.API.Controllers
         [ProducesResponseType(typeof(ResponseResult), 200)]
         public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
         {
+            Console.Write("teste");
+
             return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
         }
 
