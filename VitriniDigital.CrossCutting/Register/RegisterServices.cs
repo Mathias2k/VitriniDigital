@@ -19,12 +19,15 @@ namespace Digital.CrossCutting.Register
             services.AddScoped<DbSession>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<IUsuarioService, UsuarioService>();            
+            services.AddTransient<IEstabelecimentoService, EstabelecimentoService>();
+            services.AddTransient<IEnderecoService, EnderecoService>();
+            services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<IPortfolioService, PortfolioService>();
             services.AddTransient<IImagemService, ImagemService>();
             services.AddTransient<ILinkService, LinkService>();
-            services.AddTransient<IEstabelecimentoService, EstabelecimentoService>();
 
+            services.AddTransient<IEstabelecimentoRepository, EstabelecimentoRepository>();
+            services.AddTransient<IEnderecoRepository, EnderecoRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
             services.AddTransient<IPortfolioRepository, PortfolioRepository>();
             services.AddTransient<IImagemRepository, ImagemRepository>();

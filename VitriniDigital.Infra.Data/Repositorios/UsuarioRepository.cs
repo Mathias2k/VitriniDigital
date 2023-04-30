@@ -17,7 +17,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
         }
         public async Task<IEnumerable<Usuario>> SelectAllAsync()
         {
-            return await _session.Connection.QueryAsync<Usuario>("SELECT * FROM tbl_usuario", 
+            return await _session.Connection.QueryAsync<Usuario>("SELECT * FROM tbl_Usuario", 
                                                                  null, _session.Transaction);
         }
         public async Task InsertAsync(Usuario user)
@@ -34,7 +34,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
                     //StatusReserva = reserva.StatusReserva
                 };
 
-                int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_usuario 
+                int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_Usuario 
                                                                    (Id, IdEstabelecimento, IdUsuario DataHoraReserva, 
                                                                    QtdePessoas, StatusReserva) 
                                                                    values(@Id, @IdUsuario, @IdEstabelecimento, @DataHoraReserva, 

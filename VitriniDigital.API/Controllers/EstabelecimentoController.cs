@@ -1,53 +1,80 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VitriniDigital.Controllers;
 using VitriniDigital.Domain.DTO;
+using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Models;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ProducesResponseType(500)]
     public class EstabelecimentoController : ControllerBase
     {
         private readonly ILogger<EstabelecimentoController> _logger;
-        public EstabelecimentoController(ILogger<EstabelecimentoController> logger)
+        private readonly IEstabelecimentoService _estabService;
+        public EstabelecimentoController(ILogger<EstabelecimentoController> logger,
+                                         IEstabelecimentoService estabService)
         {
+            _estabService = estabService;
             _logger = logger;
         }
 
+        //[Authorize]
         [HttpPost(Name = "PostEstabelecimento")]
-        public async Task<IActionResult> Post(EstabelecimentoDTO estab)
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
         {
-            return Ok();
+            return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
         }
 
         [HttpGet(Name = "GetEstabelecimento")]
+        [ProducesResponseType(typeof(List<Estabelecimento>), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get()
         {
-            return Ok();
+            var respose = await _estabService.GetAllEstabelecimentosAsync();
+            if(respose.Any())
+                return Ok(respose);
+
+            return NotFound();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [ProducesResponseType(typeof(Estabelecimento), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(int id)
         {
-            await Task.Yield();
-            //var ret = await _portfolioService.GetPortfolioByIdAsync(id);
+            var respose = await _estabService.GetEstabelecimentosByIdAsync(id);
 
-            return Ok();
+            if(respose.Id != 0)
+                return Ok(respose);
+
+            return NotFound();
         }
 
+        //[Authorize]
         [HttpPut(Name = "PutEstabelecimento")]
-        public async Task<IActionResult> Put(Guid id, LinkDTO link)
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Put(int id, EstabelecimentoDTO estabDto)
         {
-            await Task.Yield();
-            //var ret = await _portfolioService.GetPortfolioByIdAsync(id);
+            if (id <= 0)
+                return BadRequest();
 
-            return Ok();
+            return Ok(await _estabService.UpdateEstabelecimentoAsync(id, estabDto));
         }
 
+        //[Authorize]
         [HttpDelete(Name = "DeleteEstabelecimento")]
-        public async Task<IActionResult> Delete()
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            if (id <= 0)
+                return BadRequest();
+
+            return Ok(await _estabService.DeleteEstabelecimentoAsync(id));
         }
     }
 }
