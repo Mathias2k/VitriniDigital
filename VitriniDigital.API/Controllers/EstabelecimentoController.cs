@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Models;
@@ -20,7 +21,7 @@ namespace VitriniDigital.API.Controllers
             _logger = logger;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost(Name = "PostEstabelecimento")]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
