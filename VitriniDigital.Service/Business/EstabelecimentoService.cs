@@ -48,7 +48,7 @@ namespace VitriniDigital.Service.Business
                 foreach (var item in estabelecimentos) //pode ser um gargalo no futuro (usar paginacao) Skip(x).Take(n)
                 {
                     item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
-                    //item.Portfolio = await ...
+                    //item.Cupom = await ...
                 }
 
             return estabelecimentos;

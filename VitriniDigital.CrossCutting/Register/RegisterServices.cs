@@ -8,6 +8,7 @@ using VitriniDigital.Service.Business;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using VitriniDigital.Infra.Data.HttpClient;
 
 namespace Digital.CrossCutting.Register
 {
@@ -22,14 +23,15 @@ namespace Digital.CrossCutting.Register
             services.AddTransient<IEstabelecimentoService, EstabelecimentoService>();
             services.AddTransient<IEnderecoService, EnderecoService>();
             services.AddTransient<IUsuarioService, UsuarioService>();
-            services.AddTransient<IPortfolioService, PortfolioService>();
+            services.AddTransient<ICupomService, CupomService>();
             services.AddTransient<IImagemService, ImagemService>();
             services.AddTransient<ILinkService, LinkService>();
+            services.AddTransient<IHttpClienteService, HttpClientService>();
 
             services.AddTransient<IEstabelecimentoRepository, EstabelecimentoRepository>();
             services.AddTransient<IEnderecoRepository, EnderecoRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
-            services.AddTransient<IPortfolioRepository, PortfolioRepository>();
+            services.AddTransient<ICupomRepository, CupomRepository>();
             services.AddTransient<IImagemRepository, ImagemRepository>();
             services.AddTransient<ILinkRepository, LinkRepository>();
             services.AddTransient<IReviewRepository, ReviewRepository>();

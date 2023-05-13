@@ -4,9 +4,9 @@ using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Domain.Interfaces.Repos
 {
-    public interface IPortfolioRepository
+    public interface ICupomRepository
     {
-        Task<IEnumerable<Portfolio>> SelectAllAsync();
-        Task InsertAsync(Portfolio user);
+        Task<IEnumerable<Cupom>> SelectAllAsync();
+        Task InsertAsync(Cupom user);
     }
 }

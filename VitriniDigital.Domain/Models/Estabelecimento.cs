@@ -4,9 +4,10 @@ using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
-    public class Estabelecimento 
+    public class Estabelecimento : Endereco
     {
         [Key]
+        [JsonPropertyName("IdEstabelecimento")]
         public int Id { get; private set; }
 
         [JsonIgnore]
@@ -19,7 +20,7 @@ namespace VitriniDigital.Domain.Models
         public string Telefone1 { get; private set; }
         public string Telefone2 { get; private set; }
         public Endereco Endereco { get; set; }
-        public Portfolio Portfolio { get; set; }
+        public Cupom Cupom { get; set; }
 
         public static class EstabelecimentoFactory
         {

@@ -9,7 +9,7 @@ using Dapper.Contrib.Extensions;
 
 namespace VitriniDigital.Domain.Models
 {
-    public class Portfolio
+    public class Cupom
     {
         public int Id { get; private set; }
         public int IdEstabelecimento { get; private set; }
@@ -19,16 +19,16 @@ namespace VitriniDigital.Domain.Models
 
         //[Write(false)]
         //public List<Link> Links { get; private set; }
-        public static class PortfolioFactory
+        public static class CupomFactory
         {
-            public static Portfolio AdicionarPortfolio(int idEstabelecimento)
+            public static Cupom AdicionarCupom(int idEstabelecimento)
             {
-                var portfolio = new Portfolio
+                var Cupom = new Cupom
                 {
                     IdEstabelecimento = idEstabelecimento
                 };
 
-                return portfolio;
+                return Cupom;
             }
         }
     }

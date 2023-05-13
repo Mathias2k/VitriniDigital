@@ -1,9 +1,10 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using VitriniDigital.Domain.Interfaces.Business;
 
 namespace VitriniDigital.Infra.Data.HttpClient
-{  
-    public class HttpClientService 
+{
+    public class HttpClientService : IHttpClienteService
     {
         private readonly IHttpClientFactory _clientFactory;
         public HttpClientService(IHttpClientFactory clientFactory)
@@ -11,7 +12,7 @@ namespace VitriniDigital.Infra.Data.HttpClient
             _clientFactory = clientFactory;
         }
 
-        public async Task<object> HttpClientPostAsync(string url)
+        public async Task<object> HttpClientPostAsync(string url, object obj)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Add("Accept", "application/json");

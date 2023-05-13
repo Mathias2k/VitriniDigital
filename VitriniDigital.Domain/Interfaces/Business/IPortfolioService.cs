@@ -6,11 +6,11 @@ using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Domain.Interfaces.Business
 {
-    public interface IPortfolioService
+    public interface ICupomService
     {
-        Task<bool> AddPortfolioAsync(PortfolioDTO userDto);
-        Task<IEnumerable<Portfolio>> GetAllPortfoliosAsync();
-        Task<Portfolio> GetPortfolioByIdAsync(Guid id);
-        Task UpdatePortfolioAsync(PortfolioDTO PortfolioDto);
+        Task<bool> AddCupomAsync(CupomDTO userDto);
+        Task<IEnumerable<Cupom>> GetAllCupomsAsync();
+        Task<Cupom> GetCupomByIdAsync(Guid id);
+        Task UpdateCupomAsync(CupomDTO CupomDto);
     }
 }
