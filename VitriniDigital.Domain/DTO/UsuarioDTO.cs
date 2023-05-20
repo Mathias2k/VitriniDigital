@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Domain.DTO
 {
@@ -15,6 +14,5 @@ namespace VitriniDigital.Domain.DTO
 
         [PasswordPropertyText]
         public string Password { get; set; }
-        public Estabelecimento Estabelecimento { get;  set; }
     }
 }

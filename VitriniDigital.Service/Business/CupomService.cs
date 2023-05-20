@@ -17,8 +17,8 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<bool> AddCupomAsync(CupomDTO CupomDto)
         {
-            var Cupom = Cupom.CupomFactory.AdicionarCupom(CupomDto.IdEstabelecimento);
-            await _CupomRepo.InsertAsync(Cupom);
+            var portfolio = Cupom.CupomFactory.AdicionarCupom(CupomDto.IdEstabelecimento);
+            await _CupomRepo.InsertAsync(portfolio);
 
             return true;
         }

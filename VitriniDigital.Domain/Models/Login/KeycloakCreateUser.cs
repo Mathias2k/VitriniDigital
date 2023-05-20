@@ -1,79 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using VitriniDigital.Domain.DTO;
+using System.Text.Json.Serialization;
 
 namespace VitriniDigital.Domain.Models.Login
 {
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<KeycloakCreateUser>(myJsonResponse);
-
-    //add value predefinido nas props
-
     public class KeycloakCreateUser
     {
-        //private Usuario _user;
-
         public KeycloakCreateUser()
         {
-            Credentials = new();
-            DisableableCredentialTypes = new();
-            RequiredActions = new();
+            disableableCredentialTypes = new();
+            requiredActions = new();
         }
-        public long CreatedTimestamp { get; set; } = 1588880747548;
-        public string Username { get; set; }
-        public bool Enabled { get; set; } = true;
-        public bool Totp { get; set; } = false;
-        public bool EmailVerified { get; set; } = true;
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public List<object> DisableableCredentialTypes { get; set; }
-        public List<object> RequiredActions { get; set; }
-        public int NotBefore { get; set; } = 0;
-        public List<Credential> Credentials { get; set; }
-        public Access Access { get; set; }
-        public List<string> RealmRoles { get; set; } = new List<string> { "default-roles-marraia" };
+        public long createdTimestamp { get; set; } = 1588880747548;
+        public string username { get; set; }
+        public bool enabled { get; set; } = true;
+        public bool totp { get; set; } = false;
+        public bool emailVerified { get; set; } = true;
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string email { get; set; }
+        public List<object> disableableCredentialTypes { get; set; }
+        public List<object> requiredActions { get; set; }
+        public int notBefore { get; set; } = 0;
+        public List<credential> credentials { get; set; }
+        public access access { get; set; }
+        public List<string> realmRoles { get; set; } = new List<string> { "default-roles-marraia" };
         public static class KeycloakCreateUserFactory
         {
             public static KeycloakCreateUser ConfigurarUsuario(Usuario user)
             {
-                //int age = CalculaIdade(usuarioDto.DataNascimento);
-                //ValidaIdade(age);
-
-                Credential credential = new()
+                credential credential = new()
                 {
-                    Value = user.Password
+                    value = user.Password
                 };
-                List<Credential> credentials = new()
+                List<credential> credentials = new()
                 {
                     credential
                 };
 
+                access access = new();
+
                 var usuarioKeycloak = new KeycloakCreateUser
                 {
-                    Username = user.UserName,
-                    FirstName = user.Nome,
-                    LastName = user.SobreNome,
-                    Email = user.Email,
-                    Credentials = credentials
+                    username = user.UserName,
+                    firstName = user.Nome,
+                    lastName = user.SobreNome,
+                    email = user.Email,
+                    credentials = credentials,
+                    access = access
                 };
 
                 return usuarioKeycloak;
             }
         }
     }
-    public class Access
+    public class access
     {
-        public bool ManageGroupMembership { get; set; } = true;
-        public bool View { get; set; } = true;
-        public bool MapRoles { get; set; } = true;
-        public bool Impersonate { get; set; } = true;
-        public bool Manage { get; set; } = true;
+        public bool manageGroupMembership { get; set; } = true;
+        public bool view { get; set; } = true;
+        public bool mapRoles { get; set; } = true;
+        public bool impersonate { get; set; } = true;
+        public bool manage { get; set; } = true;
     }
-    public class Credential
+    public class credential
     {
-        public string Type { get; set; } = "password";
-        public string Value { get; set; }
-        public bool Temporary { get; set; } = false;
+        [JsonPropertyName("type")]
+        public string type { get; set; } = "password";
+        public string value { get; set; }
+        public bool temporary { get; set; } = false;
     }
 }
