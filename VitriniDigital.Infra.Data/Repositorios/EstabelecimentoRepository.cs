@@ -44,7 +44,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
                 var param = new
                 {
                     IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
-                    IdEndereco = estab.IdEndereco,
+                    //IdEndereco = estab.IdEndereco,
                     Nome = estab.Nome,
                     Email = estab.Email,
                     Telefone1 = estab.Telefone1,

@@ -5,15 +5,15 @@ namespace VitriniDigital.Domain.Models
     public class Link
     {
         public int Id { get; private set; }
-        public int IdPortfolio { get; private set; }
+        public int IdCupom { get; private set; }
         public string Url { get; private set; }
         public static class LinkFactory
         {
-            public static Link CriarGuidLink(LinkDTO linkDto, int idPortfolio)
+            public static Link CriarGuidLink(LinkDTO linkDto, int idCupom)
             {
                 var link = new Link
                 {
-                    IdPortfolio = idPortfolio,
+                    IdCupom = idCupom,
                     Url = linkDto.Url
                 };
 

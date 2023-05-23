@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VitriniDigital.CrossCutting
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VitriniDigital.API", "VitriniDigital.API\VitriniDigital.API.csproj", "{FFCE767B-8203-4431-9357-3D59B32D7385}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Testes", "6 - Testes", "{DBB93DB4-209A-4DCD-ACCA-3EE8E83F651E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VitriniDigital.Tests", "VitriniDigital.Tests\VitriniDigital.Tests.csproj", "{719613AE-CD94-4D91-A425-60F41C765AAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{FFCE767B-8203-4431-9357-3D59B32D7385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFCE767B-8203-4431-9357-3D59B32D7385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFCE767B-8203-4431-9357-3D59B32D7385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{719613AE-CD94-4D91-A425-60F41C765AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{719613AE-CD94-4D91-A425-60F41C765AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{719613AE-CD94-4D91-A425-60F41C765AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{719613AE-CD94-4D91-A425-60F41C765AAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{819EF322-89E4-4FA7-9EC5-581D4FCBB879} = {F3B6BD1D-4FF6-4D17-BA8C-29905A28F854}
 		{C94D2E89-38ED-4CFB-BCA5-080204302AB0} = {D99698C2-F558-4BD2-91D1-D912A54A8E3E}
 		{FFCE767B-8203-4431-9357-3D59B32D7385} = {A12D6B07-2A85-4014-BA57-DD889662AC59}
+		{719613AE-CD94-4D91-A425-60F41C765AAA} = {DBB93DB4-209A-4DCD-ACCA-3EE8E83F651E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {02D239F4-76DC-4ED6-ADFD-4D9A53CE3542}

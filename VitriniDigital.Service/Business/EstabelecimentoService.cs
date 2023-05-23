@@ -21,9 +21,10 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<ResponseResult> AddEstabelecimentoAsync(EstabelecimentoDTO estabDto)
         {
+            //refatorar esse metodo e classe
             int idEnd = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
 
-            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto, idEnd);
+            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto);
 
             ResponseResult response = new()
             {
@@ -36,7 +37,7 @@ namespace VitriniDigital.Service.Business
         public async Task<Estabelecimento> GetEstabelecimentosByIdAsync(int id)
         {
             var estabelecimento = await _estabelecimentoRepo.SelectByIdAsync(id);
-            estabelecimento.Endereco = await _enderecoService.GetEnderecoByIdAsync(estabelecimento.IdEndereco);
+            //estabelecimento.Endereco = await _enderecoService.GetEnderecoByIdAsync(estabelecimento.IdEndereco);
 
             return estabelecimento;
         }
@@ -47,8 +48,8 @@ namespace VitriniDigital.Service.Business
             if (estabelecimentos.Any())
                 foreach (var item in estabelecimentos) //pode ser um gargalo no futuro (usar paginacao) Skip(x).Take(n)
                 {
-                    item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
-                    //item.Portfolio = await ...
+                    // item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
+                    //item.Cupom = await ...
                 }
 
             return estabelecimentos;
@@ -58,7 +59,7 @@ namespace VitriniDigital.Service.Business
             var estabelecimento = await GetEstabelecimentosByIdAsync(id);
             var retorno = await _estabelecimentoRepo.UpdateAsync(id, estabDto);
 
-            await _enderecoService.UpdateEnderecoAsync(estabelecimento.IdEndereco, estabDto.EnderecoDto);
+            //await _enderecoService.UpdateEnderecoAsync(estabelecimento.IdEndereco, estabDto.EnderecoDto);
 
             ResponseResult response = new()
             {
@@ -73,7 +74,7 @@ namespace VitriniDigital.Service.Business
             var estabelecimento = await GetEstabelecimentosByIdAsync(id);
             var retorno = await _estabelecimentoRepo.DeleteAsync(id);
 
-            await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
+            //await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
 
             ResponseResult response = new()
             {

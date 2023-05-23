@@ -21,15 +21,13 @@ namespace VitriniDigital.API.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        [HttpPost(Name = "PostEstabelecimento")]
-        [ProducesResponseType(typeof(ResponseResult), 200)]
-        public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
-        {
-            Console.Write("teste");
-
-            return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
-        }
+        //[Authorize]
+        //[HttpPost(Name = "PostEstabelecimento")]
+        //[ProducesResponseType(typeof(ResponseResult), 200)]
+        //public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
+        //{
+        //    return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
+        //}
 
         [HttpGet(Name = "GetEstabelecimento")]
         [ProducesResponseType(typeof(List<Estabelecimento>), 200)]

@@ -7,23 +7,23 @@ namespace VitriniDigital.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PortfolioController : ControllerBase
+    public class CupomController : ControllerBase
     {
-        private readonly ILogger<PortfolioController> _logger;
-        private readonly IPortfolioService _portfolioService;
-        public PortfolioController(ILogger<PortfolioController> logger,
-                                   IPortfolioService portfolioService
+        private readonly ILogger<CupomController> _logger;
+        private readonly ICupomService _CupomService;
+        public CupomController(ILogger<CupomController> logger,
+                                   ICupomService CupomService
             )
         {
             _logger = logger;
-            _portfolioService = portfolioService;
+            _CupomService = CupomService;
         }
 
         [Authorize]
-        [HttpGet(Name = "GetPortfolio")]
+        [HttpGet(Name = "GetCupom")]
         public async Task<IActionResult> Get()
         {
-            var ret = await _portfolioService.GetAllPortfoliosAsync();
+            var ret = await _CupomService.GetAllCupomsAsync();
             return Ok(ret);
         }
 
@@ -31,19 +31,19 @@ namespace VitriniDigital.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var ret = await _portfolioService.GetPortfolioByIdAsync(id);
+            var ret = await _CupomService.GetCupomByIdAsync(id);
 
             return Ok(ret);
         }
 
         [Authorize]
-        [HttpPost(Name = "PostPortfolio")]
-        public async Task<IActionResult> Post([FromBody]PortfolioDTO portfolio)
+        [HttpPost(Name = "PostCupom")]
+        public async Task<IActionResult> Post([FromBody]CupomDTO Cupom)
         {
-            if (portfolio == null)
+            if (Cupom == null)
                 return BadRequest();
 
-            var ret = await _portfolioService.AddPortfolioAsync(portfolio);
+            var ret = await _CupomService.AddCupomAsync(Cupom);
             if (ret)
                 return Ok();
 
@@ -51,14 +51,14 @@ namespace VitriniDigital.Controllers
         }
 
         [Authorize]
-        [HttpPut(Name = "PutPortfolio")]
+        [HttpPut(Name = "PutCupom")]
         public async Task<IActionResult> Put()
         {
             return Ok();
         }
 
         [Authorize]
-        [HttpDelete(Name = "DeletePortfolio")]
+        [HttpDelete(Name = "DeleteCupom")]
         public async Task<IActionResult> Delete()
         {
             return Ok();

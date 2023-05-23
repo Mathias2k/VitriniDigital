@@ -8,15 +8,15 @@ using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Infra.Data.Repositorios
 {
-    public class PortfolioRepository : IPortfolioRepository
+    public class CupomRepository : ICupomRepository
     {
         //TODO
-        public Task InsertAsync(Portfolio user)
+        public Task InsertAsync(Cupom user)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Portfolio>> SelectAllAsync()
+        public Task<IEnumerable<Cupom>> SelectAllAsync()
         {
             throw new NotImplementedException();
         }

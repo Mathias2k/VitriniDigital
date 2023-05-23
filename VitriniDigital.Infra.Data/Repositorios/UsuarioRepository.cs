@@ -26,19 +26,12 @@ namespace VitriniDigital.Infra.Data.Repositorios
             {
                 var param = new
                 {
-                    //Id = reserva.Id,
-                    //IdUsuario = reserva.IdUsuario,
-                    //IdEstabelecimento = reserva.IdEstabelecimento,
-                    //DataHoraReserva = reserva.DataHoraReserva,
-                    //QtdePessoas = reserva.QtdePessoas,
-                    //StatusReserva = reserva.StatusReserva
+
                 };
 
                 int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_Usuario 
-                                                                   (Id, IdEstabelecimento, IdUsuario DataHoraReserva, 
-                                                                   QtdePessoas, StatusReserva) 
-                                                                   values(@Id, @IdUsuario, @IdEstabelecimento, @DataHoraReserva, 
-                                                                   @QtdePessoas, @StatusReserva)",
+                                                                   (Id, IdEstabelecimento) 
+                                                                   values(@Id, @IdUsuario)",
                                                                    param, _session.Transaction);
             }
             catch(Exception ex)

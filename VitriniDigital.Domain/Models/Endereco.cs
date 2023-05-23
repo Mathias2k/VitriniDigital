@@ -1,10 +1,12 @@
 ﻿using Dapper.Contrib.Extensions;
+using System.Text.Json.Serialization;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Endereco
     {
         [Key]
+        [JsonPropertyName("IdEndereco")]
         public int Id { get; set; }
         public string Logradouro { get; set; } //rua, av, etc
         public string CEP { get; set; }

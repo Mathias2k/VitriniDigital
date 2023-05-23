@@ -2,7 +2,7 @@
 
 namespace VitriniDigital.Domain.DTO
 {
-    public class PortfolioDTO
+    public class CupomDTO
     {
         public int IdEstabelecimento { get; set; }
         //[Write(false)]
