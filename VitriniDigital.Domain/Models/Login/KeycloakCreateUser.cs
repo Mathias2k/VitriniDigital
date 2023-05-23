@@ -43,8 +43,8 @@ namespace VitriniDigital.Domain.Models.Login
                 var usuarioKeycloak = new KeycloakCreateUser
                 {
                     username = user.UserName,
-                    firstName = user.Nome,
-                    lastName = user.SobreNome,
+                    firstName = "",
+                    lastName = "",
                     email = user.Email,
                     credentials = credentials,
                     access = access

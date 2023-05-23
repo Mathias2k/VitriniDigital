@@ -5,13 +5,14 @@ using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
-    public class Estabelecimento 
+    public class Estabelecimento
     {
         [Key]
         public int Id { get; private set; }
 
         [JsonIgnore]
         public int IdTipoEstabelecimento { get; private set; }
+        public Portfolio Portfolio { get; private set; }
         public string Nome { get; private set; }
         public string Email { get; private set; }
         public string Telefone1 { get; private set; }

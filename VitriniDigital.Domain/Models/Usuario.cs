@@ -1,7 +1,5 @@
-﻿using VitriniDigital.Domain.DTO;
-using System.ComponentModel.DataAnnotations;
-using System;
-using System.ComponentModel;
+﻿using System;
+using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
@@ -21,10 +19,8 @@ namespace VitriniDigital.Domain.Models
                 var usuario = new Usuario
                 {
                     Id = Guid.NewGuid(),
-                    Nome = usuarioDto.Nome,
-                    SobreNome = usuarioDto.SobreNome,
                     Email = usuarioDto.Email,
-                    UserName = usuarioDto.UserName,
+                    UserName = usuarioDto.Email,
                     Password = usuarioDto.Password
                 };
 

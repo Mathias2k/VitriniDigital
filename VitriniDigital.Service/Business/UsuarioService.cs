@@ -28,20 +28,25 @@ namespace VitriniDigital.Service.Business
             var usuario = Usuario.UsuarioFactory.AdicionarUsuario(userDto);
             var userKeycloak = KeycloakCreateUser.KeycloakCreateUserFactory.ConfigurarUsuario(usuario);
 
-            await _httpClientService.HttpClientPostAsync(_config.UrlCreateUserKeyCloak, 
+            await _httpClientService.HttpClientPostAsync(_config.UrlCreateUserKeyCloak,
                                                          userKeycloak,
                                                          await _httpClientService.GetAdminTokenAsync());
-            await _usuarioRepo.InsertAsync(usuario);
-
-            return true;
+            return await _usuarioRepo.InsertAsync(usuario);
         }
+
+        //talvez nao precise desse endpoint
         public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
             return await _usuarioRepo.SelectAllAsync();
         }
 
+        //talvez nao precise desse endpoint
         public async Task<Usuario> GetUsuarioByIdAsync(Guid id)
         {
+            //busco user no DB
+            //busco users no KC: http://20.201.116.67//admin/realms/marraia/users
+
+            //busco na lista de user do KC o usuario que corresponde ao user que tenho no DB
             return new Usuario();
         }
 

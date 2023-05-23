@@ -46,6 +46,7 @@ namespace VitriniDigital.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(int id)
         {
+            //buscar o e
             var respose = await _estabService.GetEstabelecimentosByIdAsync(id);
 
             if(respose.Id != 0)
