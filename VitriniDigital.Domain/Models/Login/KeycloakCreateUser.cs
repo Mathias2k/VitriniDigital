@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models.Login
 {
@@ -27,7 +27,7 @@ namespace VitriniDigital.Domain.Models.Login
         public List<string> realmRoles { get; set; } = new List<string> { "default-roles-marraia" };
         public static class KeycloakCreateUserFactory
         {
-            public static KeycloakCreateUser ConfigurarUsuario(Usuario user)
+            public static KeycloakCreateUser ConfigurarUsuario(UsuarioDTO user)
             {
                 credential credential = new()
                 {
@@ -42,7 +42,7 @@ namespace VitriniDigital.Domain.Models.Login
 
                 var usuarioKeycloak = new KeycloakCreateUser
                 {
-                    username = user.UserName,
+                    username = user.Email,
                     firstName = "",
                     lastName = "",
                     email = user.Email,

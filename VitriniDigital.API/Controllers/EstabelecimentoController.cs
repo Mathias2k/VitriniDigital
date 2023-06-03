@@ -21,62 +21,110 @@ namespace VitriniDigital.API.Controllers
             _logger = logger;
         }
 
-        //[Authorize]
-        //[HttpPost(Name = "PostEstabelecimento")]
-        //[ProducesResponseType(typeof(ResponseResult), 200)]
-        //public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
-        //{
-        //    return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
-        //}
+        [Authorize]
+        [HttpPost]
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
+        {
+            try
+            { 
+            return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Post));
+                throw;
+            }
+        }
 
-        [HttpGet(Name = "GetEstabelecimento")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<Estabelecimento>), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get()
         {
-            var respose = await _estabService.GetAllEstabelecimentosAsync();
-            if(respose.Any())
-                return Ok(respose);
+            try
+            {
+                var respose = await _estabService.GetAllEstabelecimentosAsync();
+                if (respose.Any())
+                    return Ok(respose);
 
-            return NotFound();
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Get));
+                throw;
+            }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(Estabelecimento), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
-            //buscar o e
-            var respose = await _estabService.GetEstabelecimentosByIdAsync(id);
+            try
+            {
+                var estabelecimento = await _estabService.GetEstabelecimentosByIdAsync(id);
 
-            if(respose.Id != 0)
-                return Ok(respose);
+                if (!string.IsNullOrEmpty(estabelecimento.Id))
+                    return Ok(estabelecimento);
 
-            return NotFound();
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(GetById));
+                throw;
+            }
         }
 
-        //[Authorize]
-        [HttpPut(Name = "PutEstabelecimento")]
-        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [Authorize]
+        [HttpPut]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Put(int id, EstabelecimentoDTO estabDto)
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Put(Estabelecimento estab)
         {
-            if (id <= 0)
-                return BadRequest();
+            try
+            {
+                if (estab == null)
+                    return BadRequest();
 
-            return Ok(await _estabService.UpdateEstabelecimentoAsync(id, estabDto));
+                if (await _estabService.UpdateEstabelecimentoAsync(estab))
+                    return Ok();
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Put));
+                throw;
+            }
         }
 
-        //[Authorize]
-        [HttpDelete(Name = "DeleteEstabelecimento")]
-        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [Authorize]
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Delete(int id)
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id <= 0)
-                return BadRequest();
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest();
 
-            return Ok(await _estabService.DeleteEstabelecimentoAsync(id));
+                if (await _estabService.DeleteEstabelecimentoAsync(id))
+                    return Ok();
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Delete));
+                throw;
+            }
         }
     }
 }

@@ -7,10 +7,11 @@ namespace VitriniDigital.Domain.Interfaces.Repos
 {
     public interface IEstabelecimentoRepository
     {
-        Task<Estabelecimento> SelectByIdAsync(int idEstab);
+        Task<Estabelecimento> SelectByIdAsync(string idEstab);
+        Task<Estabelecimento> SelectByIdUsuarioAsync(string idUsuario);
         Task<IEnumerable<Estabelecimento>> SelectAllAsync();
-        Task<int> InsertAsync(Estabelecimento estab);
-        Task<int> UpdateAsync(int id, EstabelecimentoDTO estab);
-        Task<int> DeleteAsync(int id);
+        Task<string> InsertAsync(Estabelecimento estab);
+        Task<bool> UpdateAsync(Estabelecimento estab);
+        Task<bool> DeleteAsync(string id);
     }
 }

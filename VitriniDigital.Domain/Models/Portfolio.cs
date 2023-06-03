@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Portfolio
     {
-        //links
-        //images
+        public string Id { get; set; }
+        public List<Link> Links { get; set; }        
+        public List<Imagem> Imagens { get; set; }
     }
 }

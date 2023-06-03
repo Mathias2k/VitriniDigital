@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.Config;
 using VitriniDigital.Domain.Interfaces.Business;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using VitriniDigital.Domain.Models.Login;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
 
 namespace VitriniDigital.Infra.Data.HttpClient
 {
@@ -41,13 +39,18 @@ namespace VitriniDigital.Infra.Data.HttpClient
 
             return response;
         }
-        public async Task<object> HttpClientGetAsync(string url)
+        public async Task<HttpResponseMessage> HttpClientGetAsync(string url, string token = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
-            //request.Headers.Add("User-Agent", "YourApp");
+
             var client = _clientFactory.CreateClient();
+            if (!string.IsNullOrEmpty(token))
+                client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token);
+
             var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
 
             return response;
         }

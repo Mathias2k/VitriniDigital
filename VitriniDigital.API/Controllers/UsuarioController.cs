@@ -1,7 +1,8 @@
-using VitriniDigital.Domain.DTO;
-using VitriniDigital.Domain.Interfaces.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VitriniDigital.Domain.DTO;
+using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Controllers
 {
@@ -12,57 +13,96 @@ namespace VitriniDigital.Controllers
         private readonly ILogger<UsuarioController> _logger;
         private readonly IUsuarioService _usuarioService;
         public UsuarioController(ILogger<UsuarioController> logger,
-                                 IUsuarioService usuarioService
-            )
+                                 IUsuarioService usuarioService)
         {
             _logger = logger;
             _usuarioService = usuarioService;
         }
 
+        //criar RecuperarSenha
+        //criar ReativarConta
+        //criar AlterarSenha
+
         [Authorize]
-        [HttpGet(Name = "GetUsuario")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get()
         {
-            return Ok();
-            //var ret = await _usuarioService.GetAllUsuariosAsync();
-            //return Ok(ret);
+            try
+            {
+                return Ok(await _usuarioService.GetAllUsuariosAsync());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Get));
+                throw;
+            }
         }
 
         [Authorize]
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(string id)
         {
-            var ret = await _usuarioService.GetUsuarioByIdAsync(id);
+            try
+            {
+                var user = await _usuarioService.GetUsuarioByIdAsync(id);
+                if (user != null)
+                    return Ok(user);
 
-            return Ok(ret);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(GetById));
+                throw;
+            }
         }
 
         [Authorize]
         [HttpPost(Name = "PostUsuario")]
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post(UsuarioDTO user)
         {
-            if (user == null)
-                return BadRequest();
+            try
+            {
+                if (user == null)
+                    return BadRequest();
 
-            var ret = await _usuarioService.AddUsuarioAsync(user);
-            if (ret)
-                return Ok();
-
-            return BadRequest();
+                return Ok(await _usuarioService.AddUsuarioAsync(user));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Post));
+                throw;
+            }
         }
 
         [Authorize]
-        [HttpPut(Name = "PutUsuario")]
-        public async Task<IActionResult> Put()
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(string id)
         {
-            return Ok();
-        }
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest();
 
-        [Authorize]
-        [HttpDelete(Name = "DeleteUsuario")]
-        public async Task<IActionResult> Delete()
-        {
-            return Ok();
+                if (await _usuarioService.DesativarUsuarioAsync(id))
+                    return Ok();
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Delete));
+                throw;
+            }
         }
     }
 }

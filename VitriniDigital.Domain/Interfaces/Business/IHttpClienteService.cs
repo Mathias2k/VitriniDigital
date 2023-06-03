@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace VitriniDigital.Domain.Interfaces.Business
 {
     public interface IHttpClienteService
     {
         Task<object> HttpClientPostAsync(string url, object obj, string token = null);
-        Task<object> HttpClientGetAsync(string url);
+        Task<HttpResponseMessage> HttpClientGetAsync(string url, string token = null);
         Task<string> GetAdminTokenAsync();
     }
 }

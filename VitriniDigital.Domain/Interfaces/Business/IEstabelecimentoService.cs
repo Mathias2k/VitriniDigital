@@ -9,9 +9,10 @@ namespace VitriniDigital.Domain.Interfaces.Business
     public interface IEstabelecimentoService
     {
         Task<ResponseResult> AddEstabelecimentoAsync(EstabelecimentoDTO estabDto);
-        Task<Estabelecimento> GetEstabelecimentosByIdAsync(int id);
+        Task<Estabelecimento> GetEstabelecimentosByIdAsync(string id);
+        Task<Estabelecimento> GetEstabelecimentosByIdUsuarioAsync(string id);
         Task<IEnumerable<Estabelecimento>> GetAllEstabelecimentosAsync();
-        Task<ResponseResult> UpdateEstabelecimentoAsync(int id, EstabelecimentoDTO estabDto);
-        Task<ResponseResult> DeleteEstabelecimentoAsync(int id);
+        Task<bool> UpdateEstabelecimentoAsync(Estabelecimento estab);
+        Task<bool> DeleteEstabelecimentoAsync(string id);
     }
 }

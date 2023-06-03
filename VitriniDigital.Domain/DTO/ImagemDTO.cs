@@ -2,6 +2,6 @@
 {
     public class ImagemDTO
     {
-        public byte[] Content { get; set; }
+        public string ImageContent { get; set; } //base 64
     }
 }

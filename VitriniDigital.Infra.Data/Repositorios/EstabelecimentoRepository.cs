@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
@@ -12,16 +10,12 @@ namespace VitriniDigital.Infra.Data.Repositorios
 {
     public class EstabelecimentoRepository : IEstabelecimentoRepository
     {
-        private readonly ILogger<EstabelecimentoRepository> _logger;
         private DbSession _session;
-        public EstabelecimentoRepository(DbSession session,
-                                         ILogger<EstabelecimentoRepository> logger
-            )
+        public EstabelecimentoRepository(DbSession session)
         {
-            _logger = logger;
             _session = session;
         }
-        public async Task<Estabelecimento> SelectByIdAsync(int idEstab)
+        public async Task<Estabelecimento> SelectByIdAsync(string idEstab)
         {
             var param = new
             {
@@ -32,86 +26,77 @@ namespace VitriniDigital.Infra.Data.Repositorios
                                                                                          where Id = @ID",
                                                                                          param, _session.Transaction);
         }
+        public async Task<Estabelecimento> SelectByIdUsuarioAsync(string idUsuario)
+        {
+            var param = new
+            {
+                IdUsuario = idUsuario
+            };
+
+            return await _session.Connection.QuerySingleOrDefaultAsync<Estabelecimento>(@"SELECT * FROM tbl_Estabelecimento
+                                                                                         where IdUsuario = @IdUsuario",
+                                                                                         param, _session.Transaction);
+        }
         public async Task<IEnumerable<Estabelecimento>> SelectAllAsync()
         {
             return await _session.Connection.QueryAsync<Estabelecimento>(@"SELECT * FROM tbl_Estabelecimento",
                                                                          param: null, _session.Transaction);
         }
-        public async Task<int> InsertAsync(Estabelecimento estab)
+        public async Task<string> InsertAsync(Estabelecimento estab)
         {
-            try
+            var param = new
             {
-                var param = new
-                {
-                    IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
-                    //IdEndereco = estab.IdEndereco,
-                    Nome = estab.Nome,
-                    Email = estab.Email,
-                    Telefone1 = estab.Telefone1,
-                    Telefone2 = estab.Telefone2
-                };
+                ID = estab.Id,
+                IdUsuario = estab.IdUsuario,
+                IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
+                IdEndereco = estab.IdEndereco,
+                Nome = estab.Nome,
+                Telefone1 = estab.Telefone1,
+                Telefone2 = estab.Telefone2
+            };
 
-                return await _session.Connection.QuerySingleAsync<int>(@"INSERT INTO tbl_Estabelecimento
-                                                                         (IdTipoEstabelecimento, IdEndereco,
-                                                                          Nome, Email, Telefone1, Telefone2)
-                                                                         OUTPUT INSERTED.ID
-                                                                         VALUES(@IdTipoEstabelecimento, @IdEndereco,
-                                                                                @Nome, @Email, @Telefone1, @Telefone2)",
-                                                                         param, _session.Transaction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("EstabelecimentoRepository.InsertAsync - ", ex);
-                throw;
-            }
+            return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Estabelecimento
+                                                                            (Id, IdTipoEstabelecimento, IdEndereco,
+                                                                             IdUsuario, Nome, Telefone1, Telefone2)
+                                                                            OUTPUT INSERTED.ID
+                                                                            VALUES(@ID, @IdTipoEstabelecimento, @IdEndereco,
+                                                                                   @IdUsuario, @Nome, @Telefone1, @Telefone2)",
+                                                                     param, _session.Transaction);
         }
-        public async Task<int> UpdateAsync(int id, EstabelecimentoDTO estab)
+        public async Task<bool> UpdateAsync(Estabelecimento estab)
         {
-            try
-            {
-                var param = new
-                {
-                    ID = id,
-                    IdTipoEstabelecimento = (int)estab.TipoEstabelecimento,
-                    Nome = estab.Nome,
-                    Email = estab.Email,
-                    Telefone1 = estab.Telefone1,
-                    Telefone2 = estab.Telefone2
-                };
 
-                return await _session.Connection.ExecuteAsync(@"update tbl_Estabelecimento
-                                                                set IdTipoEstabelecimento = @IdTipoEstabelecimento,
-                                                                	Nome = @Nome,
-                                                                	Email = @Email,
-                                                                	Telefone1 = @Telefone1,
-                                                                	Telefone2 = @Telefone2
-                                                                where Id = @ID",
-                                                                param, _session.Transaction);
-            }
-            catch (Exception ex)
+            var param = new
             {
-                _logger.LogError("EstabelecimentoRepository.UpdateAsync - ", ex);
-                throw;
-            }
+                ID = estab.Id,
+                IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
+                Nome = estab.Nome,
+                Telefone1 = estab.Telefone1,
+                Telefone2 = estab.Telefone2
+            };
+
+            var ret = await _session.Connection.ExecuteAsync(@"update tbl_Estabelecimento
+                                                                   set IdTipoEstabelecimento = @IdTipoEstabelecimento,
+                                                                   	Nome = @Nome,
+                                                                   	Telefone1 = @Telefone1,
+                                                                   	Telefone2 = @Telefone2
+                                                                   where Id = @ID",
+                                                            param, _session.Transaction);
+
+            return ret > 0;
         }
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            try
+            var param = new
             {
-                var param = new
-                {
-                    ID = id,
-                };
+                ID = id,
+            };
 
-                return await _session.Connection.ExecuteAsync(@"delete from tbl_Estabelecimento
-                                                                where Id = @ID",
-                                                                param, _session.Transaction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("EstabelecimentoRepository.DeleteAsync - ", ex);
-                throw;
-            }
+            var ret = await _session.Connection.ExecuteAsync(@"delete from tbl_Estabelecimento
+                                                               where Id = @ID",
+                                                             param, _session.Transaction);
+
+            return ret > 0;
         }
     }
 }
