@@ -12,34 +12,51 @@ namespace VitriniDigital.Service.Business
     public class EstabelecimentoService : IEstabelecimentoService
     {
         private readonly IEstabelecimentoRepository _estabelecimentoRepo;
+        private readonly IPortfolioService _portfolioService;
         private readonly IEnderecoService _enderecoService;
+        private readonly ICupomService _cupomService;
         public EstabelecimentoService(IEstabelecimentoRepository estabelecimentoRepo,
-                                      IEnderecoService enderecoService)
+                                      IPortfolioService portfolioService,
+                                      IEnderecoService enderecoService,
+                                      ICupomService cupomService)
         {
             _estabelecimentoRepo = estabelecimentoRepo;
+            _portfolioService = portfolioService;
             _enderecoService = enderecoService;
+            _cupomService = cupomService;
         }
         public async Task<ResponseResult> AddEstabelecimentoAsync(EstabelecimentoDTO estabDto)
         {
-            //refatorar esse metodo e classe
-            int idEnd = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
+            string idEndereco = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
+            string idPortfolio = "";
+            //string idPortfolio = await _portfolioService.AddPortfolioAsync(estabDto.PortfolioDto);
 
-            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto);
+            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto, 
+                                                                                        idEndereco, idPortfolio);
 
-            ResponseResult response = new()
+            ResponseResult rr = new()
             {
                 Id = await _estabelecimentoRepo.InsertAsync(estabelecimento),
                 Message = "Estabelecimento criado com sucesso."
             };
 
-            return response;
+            return rr;
         }
-        public async Task<Estabelecimento> GetEstabelecimentosByIdAsync(int id)
+        public async Task<Estabelecimento> GetEstabelecimentosByIdAsync(string id)
         {
             var estabelecimento = await _estabelecimentoRepo.SelectByIdAsync(id);
-            //estabelecimento.Endereco = await _enderecoService.GetEnderecoByIdAsync(estabelecimento.IdEndereco);
+            if (estabelecimento == null)
+                return new Estabelecimento();
 
-            return estabelecimento;
+            return await GetRelacionamentosAsync(estabelecimento);
+        }
+        public async Task<Estabelecimento> GetEstabelecimentosByIdUsuarioAsync(string id)
+        {
+            var estabelecimento = await _estabelecimentoRepo.SelectByIdUsuarioAsync(id);
+            if (estabelecimento == null)
+                return new Estabelecimento();
+
+            return await GetRelacionamentosAsync(estabelecimento);
         }
         public async Task<IEnumerable<Estabelecimento>> GetAllEstabelecimentosAsync()
         {
@@ -48,41 +65,42 @@ namespace VitriniDigital.Service.Business
             if (estabelecimentos.Any())
                 foreach (var item in estabelecimentos) //pode ser um gargalo no futuro (usar paginacao) Skip(x).Take(n)
                 {
-                    // item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
+                    item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
                     //item.Cupom = await ...
                 }
 
             return estabelecimentos;
         }
-        public async Task<ResponseResult> UpdateEstabelecimentoAsync(int id, EstabelecimentoDTO estabDto)
+        public async Task<bool> UpdateEstabelecimentoAsync(Estabelecimento estab)
         {
-            var estabelecimento = await GetEstabelecimentosByIdAsync(id);
-            var retorno = await _estabelecimentoRepo.UpdateAsync(id, estabDto);
+            await _enderecoService.UpdateEnderecoAsync(estab.Endereco);
 
-            //await _enderecoService.UpdateEnderecoAsync(estabelecimento.IdEndereco, estabDto.EnderecoDto);
-
-            ResponseResult response = new()
-            {
-                Id = id,
-                Message = retorno == 1 ? "Estabelecimento atualizado com sucesso." : "Nenhum registro foi atualizado."
-            };
-
-            return response;
+            return await _estabelecimentoRepo.UpdateAsync(estab);
         }
-        public async Task<ResponseResult> DeleteEstabelecimentoAsync(int id)
+        public async Task<bool> DeleteEstabelecimentoAsync(string id)
         {
             var estabelecimento = await GetEstabelecimentosByIdAsync(id);
-            var retorno = await _estabelecimentoRepo.DeleteAsync(id);
+            if (estabelecimento == null)
+                return false;
 
-            //await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
+            await _estabelecimentoRepo.DeleteAsync(id);
+            return await DeleteRelacionamentosAsync(estabelecimento);
+        }
+        private async Task<Estabelecimento> GetRelacionamentosAsync(Estabelecimento estab)
+        {
+            estab.Endereco = await _enderecoService.GetEnderecoByIdAsync(estab.IdEndereco);
+            //estabelecimento.Portfolio = await _portfolioService.GetPortfolioByIdAsync();
+            //estabelecimento.Cupons = await _cupomService;
 
-            ResponseResult response = new()
-            {
-                Id = id,
-                Message = retorno == 1 ? "Estabelecimento apagado com sucesso." : "Nenhum registro foi apagado."
-            };
+            return estab;
+        }
+        private async Task<bool> DeleteRelacionamentosAsync(Estabelecimento estabelecimento)
+        {
+            await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
+            //await _portfolioService.DeletePortfolioAsync();
+            //await _cupomService.DeleteCupomAsync();
 
-            return response;
+            return true;
         }
     }
 }

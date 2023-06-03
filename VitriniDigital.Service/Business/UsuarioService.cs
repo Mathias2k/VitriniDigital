@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,26 +8,27 @@ using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
 using VitriniDigital.Domain.Models.Login;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Service.Business
 {
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepo;
-        private readonly IEstabelecimentoRepository _estabRepo;
+        private readonly IEstabelecimentoService _estabService;
         private readonly IHttpClienteService _httpClientService;
         private readonly ApiConfiguration _config;
         public UsuarioService(IUsuarioRepository usuarioRepo,
-                              IEstabelecimentoRepository estabRepo,
+                              IEstabelecimentoService estabService,
                               IHttpClienteService httpClientService,
                               ApiConfiguration config)
         {
             _usuarioRepo = usuarioRepo;
-            _estabRepo = estabRepo;
+            _estabService = estabService;
             _httpClientService = httpClientService;
             _config = config;
         }
-        public async Task<bool> AddUsuarioAsync(UsuarioDTO userDto)
+        public async Task<ResponseResult> AddUsuarioAsync(UsuarioDTO userDto)
         {
             var userKeycloak = KeycloakCreateUser.KeycloakCreateUserFactory.ConfigurarUsuario(userDto);
 
@@ -42,11 +42,18 @@ namespace VitriniDigital.Service.Business
             var userKC = JsonSerializer.Deserialize<List<KeyCloackGetUser>>(response.Content.ReadAsStream());
 
             if (userKC?.Count == 0)
-                return false;
+                return new ResponseResult();
 
             var usuario = Usuario.UsuarioFactory.AdicionarUsuario(userKC.FirstOrDefault());
+            await _usuarioRepo.InsertAsync(usuario);
 
-            return await _usuarioRepo.InsertAsync(usuario);
+            ResponseResult rr = new()
+            {
+                Id = usuario.Id,
+                Message = "Usuário criado com sucesso."
+            };
+
+            return rr;
         }
         public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
@@ -54,13 +61,13 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<Usuario> GetUsuarioByIdAsync(string id)
         {
-            var user = await _usuarioRepo.SelectByIdAsync(id.ToString());
+            var user = await _usuarioRepo.SelectByIdAsync(id);
             if (user == null)
                 return null;
             if (!user.Ativo)
                 return null;
 
-            var estabelecimento = await _estabRepo.SelectByIdAsync(1);
+            var estabelecimento = await _estabService.GetEstabelecimentosByIdUsuarioAsync(id);
             user.Estabelecimento = estabelecimento;
 
             return user;

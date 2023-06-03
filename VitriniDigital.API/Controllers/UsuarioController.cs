@@ -1,7 +1,8 @@
-using VitriniDigital.Domain.DTO;
-using VitriniDigital.Domain.Interfaces.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VitriniDigital.Domain.DTO;
+using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Controllers
 {
@@ -18,29 +19,36 @@ namespace VitriniDigital.Controllers
             _usuarioService = usuarioService;
         }
 
-        //[Authorize]
+        //criar RecuperarSenha
+        //criar ReativarConta
+        //criar AlterarSenha
+
+        [Authorize]
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get()
         {
             try
             {
                 return Ok(await _usuarioService.GetAllUsuariosAsync());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Get));
                 throw;
             }
         }
 
-        //[add ratelimite]
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                var user = await _usuarioService.GetUsuarioByIdAsync(id.ToString());
+                var user = await _usuarioService.GetUsuarioByIdAsync(id);
                 if (user != null)
                     return Ok(user);
 
@@ -53,9 +61,10 @@ namespace VitriniDigital.Controllers
             }
         }
 
-        //[add ratelimite]
-        //[Authorize]
-        [HttpPost]
+        [Authorize]
+        [HttpPost(Name = "PostUsuario")]
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Post(UsuarioDTO user)
         {
             try
@@ -63,10 +72,7 @@ namespace VitriniDigital.Controllers
                 if (user == null)
                     return BadRequest();
 
-                if (await _usuarioService.AddUsuarioAsync(user))
-                    return Ok();
-
-                return BadRequest();
+                return Ok(await _usuarioService.AddUsuarioAsync(user));
             }
             catch (Exception ex)
             {
@@ -75,18 +81,22 @@ namespace VitriniDigital.Controllers
             }
         }
 
-        //[add ratelimite]
-        //delete logico
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                if (await _usuarioService.DesativarUsuarioAsync(id.ToString()))
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest();
+
+                if (await _usuarioService.DesativarUsuarioAsync(id))
                     return Ok();
 
-                return BadRequest();
+                return NotFound();
             }
             catch (Exception ex)
             {

@@ -24,6 +24,7 @@ namespace Digital.CrossCutting.Register
             services.AddTransient<IEnderecoService, EnderecoService>();
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ICupomService, CupomService>();
+            services.AddTransient<IPortfolioService, PortfolioService>();
             services.AddTransient<IImagemService, ImagemService>();
             services.AddTransient<ILinkService, LinkService>();
             services.AddTransient<IHttpClienteService, HttpClientService>();

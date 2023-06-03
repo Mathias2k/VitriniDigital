@@ -1,13 +1,11 @@
-﻿using Dapper.Contrib.Extensions;
-using System.Text.Json.Serialization;
+﻿using System;
+using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Endereco
     {
-        [Key]
-        [JsonPropertyName("IdEndereco")]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Logradouro { get; set; } //rua, av, etc
         public string CEP { get; set; }
         public string Complemento { get; set; } 
@@ -18,5 +16,27 @@ namespace VitriniDigital.Domain.Models
         public string UF { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public static class EnderecoFactory
+        {
+            public static Endereco AdicionarEstabelecimento(EnderecoDTO endDto)
+            {
+                var endereco = new Endereco
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Logradouro = endDto.Logradouro,
+                    CEP = endDto.CEP,
+                    Complemento = endDto.Complemento,
+                    Numero = endDto.Numero,
+                    PontoReferencia = endDto.PontoReferencia,
+                    Cidade = endDto.Cidade,
+                    Bairro = endDto.Bairro,
+                    UF = endDto.UF,
+                    Latitude = endDto.Latitude,
+                    Longitude = endDto.Longitude 
+                };
+
+                return endereco;
+            }
+        }
     }
 }

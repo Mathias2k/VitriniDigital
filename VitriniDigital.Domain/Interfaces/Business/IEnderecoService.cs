@@ -6,9 +6,9 @@ namespace VitriniDigital.Domain.Interfaces.Business
 {
     public interface IEnderecoService
     {
-        Task<int> AddEnderecoAsync(EnderecoDTO endDto);
-        Task<Endereco> GetEnderecoByIdAsync(int idEnd);
-        Task UpdateEnderecoAsync(int id, EnderecoDTO endDto);
-        Task DeleteEnderecoAsync(int id);
+        Task<string> AddEnderecoAsync(EnderecoDTO endDto);
+        Task<Endereco> GetEnderecoByIdAsync(string idEnd);
+        Task UpdateEnderecoAsync(Endereco endereco);
+        Task DeleteEnderecoAsync(string id);
     }
 }

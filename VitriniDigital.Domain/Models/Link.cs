@@ -1,19 +1,19 @@
-﻿using VitriniDigital.Domain.DTO;
+﻿using System;
+using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Link
     {
-        public int Id { get; private set; }
-        public int IdCupom { get; private set; }
+        public string Id { get; private set; }
         public string Url { get; private set; }
         public static class LinkFactory
         {
-            public static Link CriarGuidLink(LinkDTO linkDto, int idCupom)
+            public static Link CriarGuidLink(LinkDTO linkDto)
             {
                 var link = new Link
                 {
-                    IdCupom = idCupom,
+                    Id = Guid.NewGuid().ToString(),
                     Url = linkDto.Url
                 };
 

@@ -13,19 +13,20 @@ namespace VitriniDigital.Service.Business
         {
             _enderecoRepo = enderecoRepo;
         }
-        public async Task<int> AddEnderecoAsync(EnderecoDTO endDto)
+        public async Task<string> AddEnderecoAsync(EnderecoDTO endDto)
         {
-            return await _enderecoRepo.InsertAsync(endDto);
+            var endereco = Endereco.EnderecoFactory.AdicionarEstabelecimento(endDto);
+            return await _enderecoRepo.InsertAsync(endereco);
         }
-        public async Task<Endereco> GetEnderecoByIdAsync(int idEnd)
+        public async Task<Endereco> GetEnderecoByIdAsync(string idEnd)
         {
             return await _enderecoRepo.SelectByIdAsync(idEnd);
         }
-        public async Task UpdateEnderecoAsync(int id, EnderecoDTO endDto)
+        public async Task UpdateEnderecoAsync(Endereco endereco)
         {
-             await _enderecoRepo.UpdateAsync(id, endDto);
+            await _enderecoRepo.UpdateAsync(endereco);
         }
-        public async Task DeleteEnderecoAsync(int id)
+        public async Task DeleteEnderecoAsync(string id)
         {
             await _enderecoRepo.DeleteAsync(id);
         }

@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
@@ -12,15 +10,12 @@ namespace VitriniDigital.Infra.Data.Repositorios
 {
     public class EnderecoRepository : IEnderecoRepository
     {
-        private readonly ILogger<EnderecoRepository> _logger;
         private DbSession _session;
-        public EnderecoRepository(DbSession session,
-                                  ILogger<EnderecoRepository> logger)
+        public EnderecoRepository(DbSession session)
         {
-            _logger = logger;
             _session = session;
         }
-        public async Task<Endereco> SelectByIdAsync(int idEnd)
+        public async Task<Endereco> SelectByIdAsync(string idEnd)
         {
             var param = new
             {
@@ -37,60 +32,51 @@ namespace VitriniDigital.Infra.Data.Repositorios
             return await _session.Connection.QueryAsync<Endereco>(@"SELECT * FROM tbl_Endereco",
                                                                     param: null, _session.Transaction);
         }
-        public async Task<int> InsertAsync(EnderecoDTO end)
+        public async Task<string> InsertAsync(Endereco end)
         {
-            try
+            var param = new
             {
-                var param = new
-                {
-                    Logradouro = end.Logradouro,
-                    CEP = end.CEP,
-                    Complemento = end.Complemento,
-                    Numero = end.Numero,
-                    PontoReferencia = end.PontoReferencia,
-                    Cidade = end.Cidade,
-                    Bairro = end.Bairro,
-                    UF = end.UF,
-                    Latitude = end.Latitude,
-                    Longitude = end.Longitude
-                };
+                ID = end.Id,
+                Logradouro = end.Logradouro,
+                CEP = end.CEP,
+                Complemento = end.Complemento,
+                Numero = end.Numero,
+                PontoReferencia = end.PontoReferencia,
+                Cidade = end.Cidade,
+                Bairro = end.Bairro,
+                UF = end.UF,
+                Latitude = end.Latitude,
+                Longitude = end.Longitude
+            };
 
-                return await _session.Connection.QuerySingleAsync<int>(@"INSERT INTO tbl_Endereco
-                                                                            (Logradouro, CEP, Complemento, Numero,
+            return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Endereco
+                                                                            (Id, Logradouro, CEP, Complemento, Numero,
                                                                              PontoReferencia, Cidade, Bairro, UF,
                                                                              Latitude, Longitude)
                                                                          OUTPUT INSERTED.ID
-                                                                         VALUES(@Logradouro, @CEP, @Complemento, @Numero,
+                                                                         VALUES(@ID, @Logradouro, @CEP, @Complemento, @Numero,
                                                                                 @PontoReferencia, @Cidade, @Bairro, @UF,
                                                                                 @Latitude, @Longitude)",
-                                                                         param, _session.Transaction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("EnderecoRepository.InsertAsync - ", ex);
-                throw;
-            }
+                                                                     param, _session.Transaction);
         }
-        public async Task<int> UpdateAsync(int id, EnderecoDTO end)
+        public async Task<int> UpdateAsync(Endereco end)
         {
-            try
+            var param = new
             {
-                var param = new
-                {
-                    ID = id,
-                    Logradouro = end.Logradouro,
-                    CEP = end.CEP,
-                    Complemento = end.Complemento,
-                    Numero = end.Numero,
-                    PontoReferencia = end.PontoReferencia,
-                    Cidade = end.Cidade,
-                    Bairro = end.Bairro,
-                    UF = end.UF,
-                    Latitude = end.Latitude,
-                    Longitude = end.Longitude
-                };
+                ID = end.Id,
+                Logradouro = end.Logradouro,
+                CEP = end.CEP,
+                Complemento = end.Complemento,
+                Numero = end.Numero,
+                PontoReferencia = end.PontoReferencia,
+                Cidade = end.Cidade,
+                Bairro = end.Bairro,
+                UF = end.UF,
+                Latitude = end.Latitude,
+                Longitude = end.Longitude
+            };
 
-                return await _session.Connection.ExecuteAsync(@"update tbl_Endereco
+            return await _session.Connection.ExecuteAsync(@"update tbl_Endereco
                                                                 set Logradouro = @Logradouro,
                                                                 	CEP = @CEP,
                                                                 	Complemento = @Complemento,
@@ -102,32 +88,19 @@ namespace VitriniDigital.Infra.Data.Repositorios
                                                                 	Latitude = @Latitude,
                                                                 	Longitude = @Longitude
                                                                 where Id = @ID",
-                                                                param, _session.Transaction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("EnderecoRepository.UpdateAsync - ", ex);
-                throw;
-            }
+                                                            param, _session.Transaction);
         }
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(string id)
         {
-            try
+            var param = new
             {
-                var param = new
-                {
-                    ID = id,
-                };
+                ID = id,
+            };
 
-                return await _session.Connection.ExecuteAsync(@"delete from tbl_Endereco
+            return await _session.Connection.ExecuteAsync(@"delete from tbl_Endereco
                                                                 where Id = @ID",
-                                                                param, _session.Transaction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("EnderecoRepository.DeleteAsync - ", ex);
-                throw;
-            }
+                                                            param, _session.Transaction);
+
         }
     }
 }
