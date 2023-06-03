@@ -46,17 +46,16 @@ namespace VitriniDigital.Infra.Data.Repositorios
                     IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
                     //IdEndereco = estab.IdEndereco,
                     Nome = estab.Nome,
-                    Email = estab.Email,
                     Telefone1 = estab.Telefone1,
                     Telefone2 = estab.Telefone2
                 };
 
                 return await _session.Connection.QuerySingleAsync<int>(@"INSERT INTO tbl_Estabelecimento
                                                                          (IdTipoEstabelecimento, IdEndereco,
-                                                                          Nome, Email, Telefone1, Telefone2)
+                                                                          Nome, Telefone1, Telefone2)
                                                                          OUTPUT INSERTED.ID
                                                                          VALUES(@IdTipoEstabelecimento, @IdEndereco,
-                                                                                @Nome, @Email, @Telefone1, @Telefone2)",
+                                                                                @Nome, @Telefone1, @Telefone2)",
                                                                          param, _session.Transaction);
             }
             catch (Exception ex)
@@ -74,7 +73,6 @@ namespace VitriniDigital.Infra.Data.Repositorios
                     ID = id,
                     IdTipoEstabelecimento = (int)estab.TipoEstabelecimento,
                     Nome = estab.Nome,
-                    Email = estab.Email,
                     Telefone1 = estab.Telefone1,
                     Telefone2 = estab.Telefone2
                 };
@@ -82,7 +80,6 @@ namespace VitriniDigital.Infra.Data.Repositorios
                 return await _session.Connection.ExecuteAsync(@"update tbl_Estabelecimento
                                                                 set IdTipoEstabelecimento = @IdTipoEstabelecimento,
                                                                 	Nome = @Nome,
-                                                                	Email = @Email,
                                                                 	Telefone1 = @Telefone1,
                                                                 	Telefone2 = @Telefone2
                                                                 where Id = @ID",

@@ -12,57 +12,87 @@ namespace VitriniDigital.Controllers
         private readonly ILogger<UsuarioController> _logger;
         private readonly IUsuarioService _usuarioService;
         public UsuarioController(ILogger<UsuarioController> logger,
-                                 IUsuarioService usuarioService
-            )
+                                 IUsuarioService usuarioService)
         {
             _logger = logger;
             _usuarioService = usuarioService;
         }
 
-        [Authorize]
-        [HttpGet(Name = "GetUsuario")]
+        //[Authorize]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok();
-            //var ret = await _usuarioService.GetAllUsuariosAsync();
-            //return Ok(ret);
+            try
+            {
+                return Ok(await _usuarioService.GetAllUsuariosAsync());
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, nameof(Get));
+                throw;
+            }
         }
 
-        [Authorize]
-        [HttpGet("{id:int}")]
+        //[add ratelimite]
+        //[Authorize]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var ret = await _usuarioService.GetUsuarioByIdAsync(id);
+            try
+            {
+                var user = await _usuarioService.GetUsuarioByIdAsync(id.ToString());
+                if (user != null)
+                    return Ok(user);
 
-            return Ok(ret);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(GetById));
+                throw;
+            }
         }
 
-        [Authorize]
-        [HttpPost(Name = "PostUsuario")]
+        //[add ratelimite]
+        //[Authorize]
+        [HttpPost]
         public async Task<IActionResult> Post(UsuarioDTO user)
         {
-            if (user == null)
+            try
+            {
+                if (user == null)
+                    return BadRequest();
+
+                if (await _usuarioService.AddUsuarioAsync(user))
+                    return Ok();
+
                 return BadRequest();
-
-            var ret = await _usuarioService.AddUsuarioAsync(user);
-            if (ret)
-                return Ok();
-
-            return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Post));
+                throw;
+            }
         }
 
-        [Authorize]
-        [HttpPut(Name = "PutUsuario")]
-        public async Task<IActionResult> Put()
+        //[add ratelimite]
+        //delete logico
+        //[Authorize]
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok();
-        }
+            try
+            {
+                if (await _usuarioService.DesativarUsuarioAsync(id.ToString()))
+                    return Ok();
 
-        [Authorize]
-        [HttpDelete(Name = "DeleteUsuario")]
-        public async Task<IActionResult> Delete()
-        {
-            return Ok();
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Delete));
+                throw;
+            }
         }
     }
 }

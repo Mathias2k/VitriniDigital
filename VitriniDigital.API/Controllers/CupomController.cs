@@ -12,7 +12,7 @@ namespace VitriniDigital.Controllers
         private readonly ILogger<CupomController> _logger;
         private readonly ICupomService _CupomService;
         public CupomController(ILogger<CupomController> logger,
-                                   ICupomService CupomService
+                               ICupomService CupomService
             )
         {
             _logger = logger;
@@ -20,10 +20,10 @@ namespace VitriniDigital.Controllers
         }
 
         [Authorize]
-        [HttpGet(Name = "GetCupom")]
-        public async Task<IActionResult> Get()
+        [HttpGet("estabelecimento/{id:int}")]
+        public async Task<IActionResult> GetByIdEstabelecimento(Guid id)
         {
-            var ret = await _CupomService.GetAllCupomsAsync();
+            var ret = await _CupomService.GetAllCupomsAsync(/*Guid id*/);
             return Ok(ret);
         }
 

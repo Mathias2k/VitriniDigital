@@ -5,8 +5,8 @@ namespace VitriniDigital.Domain.DTO
 {
     public class UsuarioDTO
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Endereço de email é obrigatório")]
+        [EmailAddress(ErrorMessage = "Endereço de email inválido")]
         public string Email { get; set; }
 
         [Required]

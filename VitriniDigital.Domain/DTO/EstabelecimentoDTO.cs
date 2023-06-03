@@ -11,9 +11,6 @@ namespace VitriniDigital.Domain.DTO
         [Required]
         public EnumTipoEstabelecimento TipoEstabelecimento { get; set; }
 
-        [Required(ErrorMessage = "Endereço de email é obrigatório")]
-        [EmailAddress(ErrorMessage = "Endereço de email inválido")]
-        public string Email { get; set; }
         public string Telefone1 { get; set; }
         public string Telefone2 { get; set; }
 

@@ -11,6 +11,7 @@ builder.Services
     .AddSingleton<IConfiguration>(builder.Configuration)
     .AddRegisters(builder.Configuration);
 
+#region Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -43,14 +44,18 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
+#endregion
 
+#region Cors
 builder.Services.AddCors(o => o.AddPolicy("DVPolicy", builder =>
 {
     builder.AllowAnyOrigin()
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));
+#endregion
 
+#region KeyCloack
 var authenticationOptions = builder
                             .Configuration
                             .GetSection(KeycloakAuthenticationOptions.Section)
@@ -71,13 +76,14 @@ var adminClientOptions = builder
                             .Get<KeycloakAdminClientOptions>();
 
 builder.Services.AddKeycloakAdminHttpClient(adminClientOptions);
+#endregion
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 //}
 

@@ -10,7 +10,7 @@ namespace VitriniDigital.Domain.Interfaces.Business
     {
         Task<bool> AddUsuarioAsync(UsuarioDTO userDto);
         Task<IEnumerable<Usuario>> GetAllUsuariosAsync();
-        Task<Usuario> GetUsuarioByIdAsync(Guid id);
-        Task UpdateUsuarioAsync(UsuarioDTO usuarioDto);
+        Task<Usuario> GetUsuarioByIdAsync(string id);
+        Task<bool> DesativarUsuarioAsync(string id);
     }
 }
