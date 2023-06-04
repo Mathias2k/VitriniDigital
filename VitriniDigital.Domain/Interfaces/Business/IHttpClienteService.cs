@@ -7,6 +7,7 @@ namespace VitriniDigital.Domain.Interfaces.Business
     {
         Task<object> HttpClientPostAsync(string url, object obj, string token = null);
         Task<HttpResponseMessage> HttpClientGetAsync(string url, string token = null);
+        Task HttpClientPutAsync(string url, object obj, string token = null);
         Task<string> GetAdminTokenAsync();
     }
 }
