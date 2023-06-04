@@ -104,5 +104,20 @@ namespace VitriniDigital.Controllers
                 throw;
             }
         }
+
+        [HttpPut("ResetPassword")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return BadRequest();
+
+            if(await _usuarioService.ResetarSenhaAsync(email))
+                return Ok("Email enviado para recuperação de senha.");
+
+            return BadRequest();
+        }
     }
 }

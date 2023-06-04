@@ -76,5 +76,20 @@ namespace VitriniDigital.Service.Business
         {
             return await _usuarioRepo.DisableUserAsync(id);
         }
+        public async Task<bool> ResetarSenhaAsync(string email)
+        {
+            string urlGetUser = $"{_config.UrlGetUserByUserName}{email}";
+            var response = await _httpClientService.HttpClientGetAsync(urlGetUser, await _httpClientService.GetAdminTokenAsync());
+            var userKC = JsonSerializer.Deserialize<List<KeyCloackGetUser>>(response.Content.ReadAsStream());
+
+            if (userKC?.Count == 0)
+                return false;
+
+            string[] UPDATE_PASSWORD = new string[] { "UPDATE_PASSWORD" };
+            string urlReserPassword = $"{_config.UrlResetPassword.Replace("ID_REPLACE", userKC.FirstOrDefault().id)}";
+            await _httpClientService.HttpClientPutAsync(urlReserPassword, UPDATE_PASSWORD, await _httpClientService.GetAdminTokenAsync());
+
+            return true;
+        }
     }
 }

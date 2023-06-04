@@ -12,5 +12,6 @@ namespace VitriniDigital.Domain.Interfaces.Business
         Task<IEnumerable<Usuario>> GetAllUsuariosAsync();
         Task<Usuario> GetUsuarioByIdAsync(string id);
         Task<bool> DesativarUsuarioAsync(string id);
+        Task<bool> ResetarSenhaAsync(string userName);
     }
 }

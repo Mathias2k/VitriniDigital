@@ -54,6 +54,21 @@ namespace VitriniDigital.Infra.Data.HttpClient
 
             return response;
         }
+        public async Task HttpClientPutAsync(string url, object obj, string token = null)
+        {
+            if (obj is null)
+                throw new Exception("HttpClientPostAsync - Objeto não pode ser nulo.");
+
+            var json = JsonSerializer.Serialize(obj);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = _clientFactory.CreateClient();
+            if (!string.IsNullOrEmpty(token))
+                client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.PutAsync(url, content);
+            response.EnsureSuccessStatusCode();
+        }
         public async Task<string> GetAdminTokenAsync()
         {
             var nvc = new List<KeyValuePair<string, string>>
