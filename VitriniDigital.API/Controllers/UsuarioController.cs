@@ -61,7 +61,7 @@ namespace VitriniDigital.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost(Name = "PostUsuario")]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         [ProducesResponseType(400)]

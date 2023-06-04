@@ -1,23 +1,34 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Link
     {
-        public string Id { get; private set; }
+        [JsonIgnore]
+        public string IdPortfolio { get; private set; }
         public string Url { get; private set; }
         public static class LinkFactory
         {
-            public static Link CriarGuidLink(LinkDTO linkDto)
+            public static List<Link> AdicionarLink(List<LinkDTO> linkDto, string idPortfolio)
             {
-                var link = new Link
+                var links = new List<Link>();
+                if (linkDto?.Count > 0)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Url = linkDto.Url
-                };
+                    for (int i = 0; i < linkDto.Count; i++)
+                    {
+                        var link = new Link
+                        {
+                            IdPortfolio = idPortfolio,
+                            Url = linkDto[i].Url
+                        };
 
-                return link;
+                        links.Add(link);
+                    }
+                }
+
+                return links;
             }
         }
     }

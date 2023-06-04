@@ -49,6 +49,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
                 ID = estab.Id,
                 IdUsuario = estab.IdUsuario,
                 IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
+                IdPortfolio = estab.IdPortfolio,
                 IdEndereco = estab.IdEndereco,
                 Nome = estab.Nome,
                 Telefone1 = estab.Telefone1,
@@ -56,10 +57,10 @@ namespace VitriniDigital.Infra.Data.Repositorios
             };
 
             return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Estabelecimento
-                                                                            (Id, IdTipoEstabelecimento, IdEndereco,
+                                                                            (Id, IdTipoEstabelecimento, IdPortfolio, IdEndereco,
                                                                              IdUsuario, Nome, Telefone1, Telefone2)
                                                                             OUTPUT INSERTED.ID
-                                                                            VALUES(@ID, @IdTipoEstabelecimento, @IdEndereco,
+                                                                            VALUES(@ID, @IdTipoEstabelecimento, @IdPortfolio, @IdEndereco,
                                                                                    @IdUsuario, @Nome, @Telefone1, @Telefone2)",
                                                                      param, _session.Transaction);
         }
@@ -70,6 +71,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
             {
                 ID = estab.Id,
                 IdTipoEstabelecimento = estab.IdTipoEstabelecimento,
+                IdPortfolio = estab.IdPortfolio,
                 Nome = estab.Nome,
                 Telefone1 = estab.Telefone1,
                 Telefone2 = estab.Telefone2
@@ -77,6 +79,7 @@ namespace VitriniDigital.Infra.Data.Repositorios
 
             var ret = await _session.Connection.ExecuteAsync(@"update tbl_Estabelecimento
                                                                    set IdTipoEstabelecimento = @IdTipoEstabelecimento,
+                                                                    IdPortfolio = @IdPortfolio,            
                                                                    	Nome = @Nome,
                                                                    	Telefone1 = @Telefone1,
                                                                    	Telefone2 = @Telefone2

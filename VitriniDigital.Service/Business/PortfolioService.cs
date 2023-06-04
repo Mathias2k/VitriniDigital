@@ -5,23 +5,55 @@ using System.Text;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
 
 namespace VitriniDigital.Service.Business
 {
     public class PortfolioService : IPortfolioService
     {
-        public Task<string> AddPortfolioAsync(PortfolioDTO portfolioDto)
+        private readonly ILinkService _linkService;
+        private readonly IImagemService _imagemService;
+        public PortfolioService(ILinkService linkService,
+                                IImagemService imagemService)
         {
-            throw new NotImplementedException();
+            _linkService = linkService;
+            _imagemService = imagemService;
         }
-
-        public Task<Portfolio> GetPortfolioByIdAsync(Guid id)
+        public async Task<string> AddPortfolioAsync(PortfolioDTO portfolioDto)
         {
-            throw new NotImplementedException();
-        }
+            var portfolio = Portfolio.PortfolioFactory.AdicionarPortfolio(portfolioDto);
 
-        public Task UpdatePortfolioAsync(PortfolioDTO portfolioDto)
+            await _linkService.AddLinkAsync(portfolio.Links);
+            await _imagemService.AddImagemAsync(portfolio.Imagens);
+
+            return portfolio.Links.Any() &&
+                   portfolio.Imagens.Any() ? portfolio.Id : null;
+        }
+        public async Task<Portfolio> GetPortfolioByIdAsync(string id)
+        {
+            var portfolio = new Portfolio(id)
+            {
+                Links = new(),
+                Imagens = new()
+            };
+
+            var links = await _linkService.GetLinkByIdPortfolioAsync(id);
+            if (links.Any())
+                portfolio.Links.AddRange(links);
+
+            var imagens = await _imagemService.GetImagemByIdPortfolioAsync(id);
+            if (imagens.Any())
+                portfolio.Imagens.AddRange(imagens);
+
+            return portfolio;
+        }
+        public async Task UpdatePortfolioAsync(Portfolio portfolio)
+        {
+            await _linkService.UpdateLinkAsync(portfolio.Links);
+            await _imagemService.UpdateImagemAsync(portfolio.Imagens);
+        }
+        public Task DeletePortfolioAsync(string id)
         {
             throw new NotImplementedException();
         }

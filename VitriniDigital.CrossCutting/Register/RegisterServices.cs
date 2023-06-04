@@ -35,7 +35,6 @@ namespace Digital.CrossCutting.Register
             services.AddTransient<ICupomRepository, CupomRepository>();
             services.AddTransient<IImagemRepository, ImagemRepository>();
             services.AddTransient<ILinkRepository, LinkRepository>();
-            services.AddTransient<IReviewRepository, ReviewRepository>();
 
             services.Configure<ApiConfiguration>(configuration.GetSection("ApiConfiguration"));
             services.AddScoped(cfg => cfg.GetService<IOptions<ApiConfiguration>>().Value);
