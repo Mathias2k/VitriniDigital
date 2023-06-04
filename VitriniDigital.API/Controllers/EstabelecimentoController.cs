@@ -21,15 +21,15 @@ namespace VitriniDigital.API.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
         {
             try
-            { 
-            return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
+            {
+                return Ok(await _estabService.AddEstabelecimentoAsync(estabDto));
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace VitriniDigital.API.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -103,7 +103,7 @@ namespace VitriniDigital.API.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

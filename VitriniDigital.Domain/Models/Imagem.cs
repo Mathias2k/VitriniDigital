@@ -1,23 +1,35 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Models
 {
     public class Imagem
     {
-        public string Id { get; private set; }
+        [JsonIgnore]
+        public string IdPortfolio { get; private set; }
         public string ImageContent { get; private set; } //base64
         public static class ImagemFactory
         {
-            public static Imagem CriarGuidImagem(ImagemDTO imgDto)
+            public static List<Imagem> AdicionarImagem(List<ImagemDTO> imgDto, string idPortfolio)
             {
-                var imagem = new Imagem
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ImageContent = imgDto.ImageContent
-                };
+                var imagens = new List<Imagem>();
 
-                return imagem;
+                if (imgDto?.Count > 0)
+                {
+                    for (int i = 0; i < imgDto.Count; i++)
+                    {
+                        var imagem = new Imagem
+                        {
+                            IdPortfolio = idPortfolio,
+                            ImageContent = imgDto[i].ImageContent
+                        };
+
+                        imagens.Add(imagem);
+                    }
+                }
+
+                return imagens;
             }
         }
     }

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
@@ -27,11 +30,28 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<ResponseResult> AddEstabelecimentoAsync(EstabelecimentoDTO estabDto)
         {
-            string idEndereco = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
-            string idPortfolio = "";
-            //string idPortfolio = await _portfolioService.AddPortfolioAsync(estabDto.PortfolioDto);
+            #region Transaction Rollback
+            //using (TransactionScope scope = new TransactionScope())
+            //using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlcon"].ConnectionString))
+            //{
+            //    try
+            //    {
+            //        // many actions as above....
+            //        ......scope.Complete();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        // No rollback needed if you don't call Complete.
+            //        // A rollback is automatic exiting from the using block
+            //        // TransactioScope
+            //    }
+            //}
+            #endregion
 
-            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto, 
+            string idEndereco = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
+            string idPortfolio = await _portfolioService.AddPortfolioAsync(estabDto.PortfolioDto);
+
+            var estabelecimento = Estabelecimento.EstabelecimentoFactory.AdicionarEstabelecimento(estabDto,
                                                                                         idEndereco, idPortfolio);
 
             ResponseResult rr = new()
@@ -74,6 +94,7 @@ namespace VitriniDigital.Service.Business
         public async Task<bool> UpdateEstabelecimentoAsync(Estabelecimento estab)
         {
             await _enderecoService.UpdateEnderecoAsync(estab.Endereco);
+            await _portfolioService.UpdatePortfolioAsync(estab.Portfolio);
 
             return await _estabelecimentoRepo.UpdateAsync(estab);
         }
@@ -89,7 +110,7 @@ namespace VitriniDigital.Service.Business
         private async Task<Estabelecimento> GetRelacionamentosAsync(Estabelecimento estab)
         {
             estab.Endereco = await _enderecoService.GetEnderecoByIdAsync(estab.IdEndereco);
-            //estabelecimento.Portfolio = await _portfolioService.GetPortfolioByIdAsync();
+            estab.Portfolio = await _portfolioService.GetPortfolioByIdAsync(estab.IdPortfolio);
             //estabelecimento.Cupons = await _cupomService;
 
             return estab;
@@ -97,7 +118,7 @@ namespace VitriniDigital.Service.Business
         private async Task<bool> DeleteRelacionamentosAsync(Estabelecimento estabelecimento)
         {
             await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
-            //await _portfolioService.DeletePortfolioAsync();
+            //await _portfolioService.DeletePortfolioAsync(estabelecimento.IdPortfolio);
             //await _cupomService.DeleteCupomAsync();
 
             return true;

@@ -22,11 +22,11 @@ namespace VitriniDigital.Domain.Models
 
         [JsonIgnore]
         public string IdPortfolio { get; private set; }
-        public Portfolio Portfolio { get; private set; }
+        public Portfolio Portfolio { get; set; }
 
         [JsonIgnore]
         public string IdCupons { get; private set; }
-        public List<Cupom> Cupons { get; private set; }
+        public List<Cupom> Cupons { get; set; }
         public static class EstabelecimentoFactory
         {
             public static Estabelecimento AdicionarEstabelecimento(EstabelecimentoDTO estabDto,

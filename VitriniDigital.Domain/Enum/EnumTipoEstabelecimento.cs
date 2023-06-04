@@ -5,6 +5,6 @@
         Rascunho = 0,
         Restaurante = 1,
         Bar = 2,
-        Loja = 3
+        Comercio = 3
     }
 }
