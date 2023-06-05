@@ -87,10 +87,9 @@ app.UseSwagger();
     app.UseSwaggerUI();
 //}
 
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("DVPolicy");
-
-app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
