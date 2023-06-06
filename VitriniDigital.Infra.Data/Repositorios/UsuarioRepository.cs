@@ -30,6 +30,17 @@ namespace VitriniDigital.Infra.Data.Repositorios
                                                                                   where Id = @ID",
                                                                                   param, _session.Transaction);
         }
+        public async Task<Usuario> SelectByUserNameAsync(string username)
+        {
+            var param = new
+            {
+                UserName = username
+            };
+
+            return await _session.Connection.QuerySingleOrDefaultAsync<Usuario>(@"SELECT * FROM tbl_Usuario
+                                                                                  where UserName = @UserName",
+                                                                                  param, _session.Transaction);
+        }
         public async Task<bool> InsertAsync(Usuario user)
         {
             var param = new

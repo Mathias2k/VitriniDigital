@@ -72,6 +72,19 @@ namespace VitriniDigital.Service.Business
 
             return user;
         }
+        public async Task<Usuario> GetUsuarioByUserNameAsync(string userName)
+        {
+            var user = await _usuarioRepo.SelectByUserNameAsync(userName);
+            if (user == null)
+                return null;
+            if (!user.Ativo)
+                return null;
+
+            var estabelecimento = await _estabService.GetEstabelecimentosByIdUsuarioAsync(userName);
+            user.Estabelecimento = estabelecimento;
+
+            return user;
+        }
         public async Task<bool> DesativarUsuarioAsync(string id)
         {
             return await _usuarioRepo.DisableUserAsync(id);
