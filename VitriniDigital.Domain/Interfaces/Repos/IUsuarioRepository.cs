@@ -9,6 +9,7 @@ namespace VitriniDigital.Domain.Interfaces.Repos
     {
         Task<IEnumerable<Usuario>> SelectAllAsync();
         Task<Usuario> SelectByIdAsync(string id);
+        Task<Usuario> SelectByUserNameAsync(string username);
         Task<bool> InsertAsync(Usuario user);
         Task<bool> DisableUserAsync(string id);
     }

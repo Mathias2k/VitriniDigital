@@ -8,6 +8,7 @@ namespace VitriniDigital.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ProducesResponseType(500)]
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;
@@ -57,6 +58,27 @@ namespace VitriniDigital.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(GetById));
+                throw;
+            }
+        }
+
+        [Authorize]
+        [HttpGet("{username}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetByUserName(string username)
+        {
+            try
+            {
+                var user = await _usuarioService.GetUsuarioByUserNameAsync(username);
+                if (user != null)
+                    return Ok(user);
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(GetByUserName));
                 throw;
             }
         }
