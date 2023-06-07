@@ -6,9 +6,7 @@ namespace VitriniDigital.Domain.Models
     {
         public string Id { get; private set; }
         public string Nome { get; set; }
-        public string SobreNome { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public bool Ativo { get; private set; }
         public Estabelecimento Estabelecimento { get; set; }
         public static class UsuarioFactory
