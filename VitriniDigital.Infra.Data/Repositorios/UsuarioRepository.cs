@@ -50,8 +50,8 @@ namespace VitriniDigital.Infra.Data.Repositorios
             };
 
             int ret = await _session.Connection.ExecuteAsync(@"insert into tbl_Usuario 
-                                                                   (Id, UserName, Ativo) 
-                                                                   values(@Id, @UserName, 1)",
+                                                                   (Id, UserName, Ativo, DtCadastro) 
+                                                                   values(@Id, @UserName, 1, getDate())",
                                                                param, _session.Transaction);
 
             return ret > 0;

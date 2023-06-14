@@ -80,7 +80,7 @@ namespace VitriniDigital.Service.Business
             if (!user.Ativo)
                 return null;
 
-            var estabelecimento = await _estabService.GetEstabelecimentosByIdUsuarioAsync(userName);
+            var estabelecimento = await _estabService.GetEstabelecimentosByIdUsuarioAsync(user.Id);
             user.Estabelecimento = estabelecimento;
 
             return user;
