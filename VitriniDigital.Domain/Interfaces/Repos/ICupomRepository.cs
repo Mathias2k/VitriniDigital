@@ -6,7 +6,11 @@ namespace VitriniDigital.Domain.Interfaces.Repos
 {
     public interface ICupomRepository
     {
+        Task<bool> InsertAsync(Cupom cupom);
+        Task<Cupom> SelectByIdAsync(string id);
+        Task<IEnumerable<Cupom>> SelectByIdEstabelecimentoAsync(string idEstab);
         Task<IEnumerable<Cupom>> SelectAllAsync();
-        Task InsertAsync(Cupom user);
+        Task<bool> UpdateCupomAsync(Cupom cupom);
+        Task<bool> DeleteAsync(string id);
     }
 }

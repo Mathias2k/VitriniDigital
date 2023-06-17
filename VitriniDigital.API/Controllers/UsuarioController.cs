@@ -20,11 +20,29 @@ namespace VitriniDigital.Controllers
             _usuarioService = usuarioService;
         }
 
-        //criar RecuperarSenha
-        //criar ReativarConta
-        //criar AlterarSenha
+        //[Authorize]
+        [HttpPost(Name = "PostUsuario")]
+        [ProducesResponseType(typeof(ResponseResult), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> Post([FromBody] UsuarioDTO user)
+        {
+            try
+            {
+                if (user == null)
+                    return BadRequest();
 
-        [Authorize]
+                return Ok(await _usuarioService.AddUsuarioAsync(user));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Post));
+                return StatusCode(500);
+            }
+        }
+
+        //criar ReativarConta
+
+        //[Authorize]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -37,11 +55,11 @@ namespace VitriniDigital.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Get));
-                throw;
+                return StatusCode(500);
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -58,11 +76,11 @@ namespace VitriniDigital.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(GetById));
-                throw;
+                return StatusCode(500);
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{username}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -79,31 +97,11 @@ namespace VitriniDigital.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(GetByUserName));
-                throw;
+                return StatusCode(500);
             }
         }
 
         //[Authorize]
-        [HttpPost(Name = "PostUsuario")]
-        [ProducesResponseType(typeof(ResponseResult), 200)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> Post(UsuarioDTO user)
-        {
-            try
-            {
-                if (user == null)
-                    return BadRequest();
-
-                return Ok(await _usuarioService.AddUsuarioAsync(user));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, nameof(Post));
-                throw;
-            }
-        }
-
-        [Authorize]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -123,7 +121,7 @@ namespace VitriniDigital.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Delete));
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -139,7 +137,7 @@ namespace VitriniDigital.Controllers
             if(await _usuarioService.ResetarSenhaAsync(email))
                 return Ok("Email enviado para recuperação de senha.");
 
-            return BadRequest();
+            return StatusCode(500);
         }
     }
 }

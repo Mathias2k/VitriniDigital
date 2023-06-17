@@ -90,17 +90,17 @@ namespace VitriniDigital.Infra.Data.Repositorios
                                                                 where Id = @ID",
                                                             param, _session.Transaction);
         }
-        public async Task<int> DeleteAsync(string id)
-        {
-            var param = new
-            {
-                ID = id,
-            };
+        //public async Task<int> DeleteAsync(string id)
+        //{
+        //    var param = new
+        //    {
+        //        ID = id,
+        //    };
 
-            return await _session.Connection.ExecuteAsync(@"delete from tbl_Endereco
-                                                                where Id = @ID",
-                                                            param, _session.Transaction);
+        //    return await _session.Connection.ExecuteAsync(@"delete from tbl_Endereco
+        //                                                        where Id = @ID",
+        //                                                    param, _session.Transaction);
 
-        }
+        //}
     }
 }

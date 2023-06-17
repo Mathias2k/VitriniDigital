@@ -9,6 +9,6 @@ namespace VitriniDigital.Domain.Interfaces.Business
         Task<string> AddEnderecoAsync(EnderecoDTO endDto);
         Task<Endereco> GetEnderecoByIdAsync(string idEnd);
         Task UpdateEnderecoAsync(Endereco endereco);
-        Task DeleteEnderecoAsync(string id);
+        //Task DeleteEnderecoAsync(string id);
     }
 }

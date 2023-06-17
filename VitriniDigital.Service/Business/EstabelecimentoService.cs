@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
@@ -30,24 +27,6 @@ namespace VitriniDigital.Service.Business
         }
         public async Task<ResponseResult> AddEstabelecimentoAsync(EstabelecimentoDTO estabDto)
         {
-            #region Transaction Rollback
-            //using (TransactionScope scope = new TransactionScope())
-            //using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlcon"].ConnectionString))
-            //{
-            //    try
-            //    {
-            //        // many actions as above....
-            //        ......scope.Complete();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        // No rollback needed if you don't call Complete.
-            //        // A rollback is automatic exiting from the using block
-            //        // TransactioScope
-            //    }
-            //}
-            #endregion
-
             string idEndereco = await _enderecoService.AddEnderecoAsync(estabDto.EnderecoDto);
             string idPortfolio = await _portfolioService.AddPortfolioAsync(estabDto.PortfolioDto);
 
@@ -65,7 +44,7 @@ namespace VitriniDigital.Service.Business
         public async Task<Estabelecimento> GetEstabelecimentosByIdAsync(string id)
         {
             var estabelecimento = await _estabelecimentoRepo.SelectByIdAsync(id);
-            if (estabelecimento == null)
+            if (estabelecimento == null || !estabelecimento.Ativo)
                 return new Estabelecimento();
 
             return await GetRelacionamentosAsync(estabelecimento);
@@ -73,7 +52,7 @@ namespace VitriniDigital.Service.Business
         public async Task<Estabelecimento> GetEstabelecimentosByIdUsuarioAsync(string id)
         {
             var estabelecimento = await _estabelecimentoRepo.SelectByIdUsuarioAsync(id);
-            if (estabelecimento == null)
+            if (estabelecimento == null || !estabelecimento.Ativo)
                 return new Estabelecimento();
 
             return await GetRelacionamentosAsync(estabelecimento);
@@ -81,12 +60,14 @@ namespace VitriniDigital.Service.Business
         public async Task<IEnumerable<Estabelecimento>> GetAllEstabelecimentosAsync()
         {
             var estabelecimentos = await _estabelecimentoRepo.SelectAllAsync();
+            estabelecimentos = estabelecimentos.Where(x => x.Ativo);
 
             if (estabelecimentos.Any())
                 foreach (var item in estabelecimentos) //pode ser um gargalo no futuro (usar paginacao) Skip(x).Take(n)
                 {
                     item.Endereco = await _enderecoService.GetEnderecoByIdAsync(item.IdEndereco);
-                    //item.Cupom = await ...
+                    item.Portfolio = await _portfolioService.GetPortfolioByIdAsync(item.IdPortfolio);
+                    item.Cupons = await _cupomService.GetCupomByIdEstabelecimentoAsync(item.Id);
                 }
 
             return estabelecimentos;
@@ -98,28 +79,29 @@ namespace VitriniDigital.Service.Business
 
             return await _estabelecimentoRepo.UpdateAsync(estab);
         }
-        public async Task<bool> DeleteEstabelecimentoAsync(string id)
+        public async Task<bool> DesativarEstabelecimentoAsync(string id)
         {
             var estabelecimento = await GetEstabelecimentosByIdAsync(id);
-            if (estabelecimento == null)
+            if (estabelecimento == null || !estabelecimento.Ativo)
                 return false;
 
             await _estabelecimentoRepo.DeleteAsync(id);
-            return await DeleteRelacionamentosAsync(estabelecimento);
+            return await DesativarRelacionamentosAsync(estabelecimento);
         }
         private async Task<Estabelecimento> GetRelacionamentosAsync(Estabelecimento estab)
         {
             estab.Endereco = await _enderecoService.GetEnderecoByIdAsync(estab.IdEndereco);
             estab.Portfolio = await _portfolioService.GetPortfolioByIdAsync(estab.IdPortfolio);
-            //estabelecimento.Cupons = await _cupomService;
+            estab.Cupons = await _cupomService.GetCupomByIdEstabelecimentoAsync(estab.Id);
 
             return estab;
         }
-        private async Task<bool> DeleteRelacionamentosAsync(Estabelecimento estabelecimento)
+        private async Task<bool> DesativarRelacionamentosAsync(Estabelecimento estabelecimento)
         {
-            await _enderecoService.DeleteEnderecoAsync(estabelecimento.IdEndereco);
-            //await _portfolioService.DeletePortfolioAsync(estabelecimento.IdPortfolio);
-            //await _cupomService.DeleteCupomAsync();
+            var cupons = await _cupomService.GetCupomByIdEstabelecimentoAsync(estabelecimento.Id);
+            if (cupons.Any())
+                foreach (var cupom in cupons)
+                    await _cupomService.DesativarCupomAsync(cupom.Id);
 
             return true;
         }

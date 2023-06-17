@@ -9,6 +9,5 @@ namespace VitriniDigital.Domain.Interfaces.Business
         Task<string> AddPortfolioAsync(PortfolioDTO portfolioDto);
         Task<Portfolio> GetPortfolioByIdAsync(string id);
         Task UpdatePortfolioAsync(Portfolio portfolioDto);
-        Task DeletePortfolioAsync(string id);
     }
 }

@@ -58,10 +58,10 @@ namespace VitriniDigital.Infra.Data.Repositorios
 
             return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Estabelecimento
                                                                             (Id, IdTipoEstabelecimento, IdPortfolio, IdEndereco,
-                                                                             IdUsuario, Nome, Telefone1, Telefone2)
+                                                                             IdUsuario, Nome, Telefone1, Telefone2, Ativo)
                                                                             OUTPUT INSERTED.ID
                                                                             VALUES(@ID, @IdTipoEstabelecimento, @IdPortfolio, @IdEndereco,
-                                                                                   @IdUsuario, @Nome, @Telefone1, @Telefone2)",
+                                                                                   @IdUsuario, @Nome, @Telefone1, @Telefone2, 1)",
                                                                      param, _session.Transaction);
         }
         public async Task<bool> UpdateAsync(Estabelecimento estab)
@@ -95,7 +95,8 @@ namespace VitriniDigital.Infra.Data.Repositorios
                 ID = id,
             };
 
-            var ret = await _session.Connection.ExecuteAsync(@"delete from tbl_Estabelecimento
+            var ret = await _session.Connection.ExecuteAsync(@"update tbl_Estabelecimento
+                                                               set Ativo = 0
                                                                where Id = @ID",
                                                              param, _session.Transaction);
 

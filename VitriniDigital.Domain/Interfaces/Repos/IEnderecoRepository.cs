@@ -10,6 +10,6 @@ namespace VitriniDigital.Domain.Interfaces.Repos
         Task<Endereco> SelectByIdAsync(string idEnd);
         Task<IEnumerable<Endereco>> SelectAllAsync();
         Task<int> UpdateAsync(Endereco end);
-        Task<int> DeleteAsync(string id);
+        //Task<int> DeleteAsync(string id);
     }
 }
