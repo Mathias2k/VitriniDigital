@@ -25,7 +25,7 @@ namespace VitriniDigital.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Post(EstabelecimentoDTO estabDto)
+        public async Task<IActionResult> Post([FromBody] EstabelecimentoDTO estabDto)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace VitriniDigital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Post));
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -45,6 +45,8 @@ namespace VitriniDigital.API.Controllers
         {
             try
             {
+                _logger.LogInformation("passei aqui");
+
                 var respose = await _estabService.GetAllEstabelecimentosAsync();
                 if (respose.Any())
                     return Ok(respose);
@@ -54,7 +56,7 @@ namespace VitriniDigital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Get));
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -75,7 +77,7 @@ namespace VitriniDigital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(GetById));
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -84,7 +86,7 @@ namespace VitriniDigital.API.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Put(Estabelecimento estab)
+        public async Task<IActionResult> Put([FromBody] Estabelecimento estab)
         {
             try
             {
@@ -99,7 +101,7 @@ namespace VitriniDigital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Put));
-                throw;
+                return StatusCode(500);
             }
         }
 
@@ -115,7 +117,7 @@ namespace VitriniDigital.API.Controllers
                 if (string.IsNullOrEmpty(id))
                     return BadRequest();
 
-                if (await _estabService.DeleteEstabelecimentoAsync(id))
+                if (await _estabService.DesativarEstabelecimentoAsync(id))
                     return Ok();
 
                 return NotFound();
@@ -123,7 +125,7 @@ namespace VitriniDigital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, nameof(Delete));
-                throw;
+                return StatusCode(500);
             }
         }
     }

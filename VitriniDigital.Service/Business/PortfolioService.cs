@@ -53,9 +53,5 @@ namespace VitriniDigital.Service.Business
             await _linkService.UpdateLinkAsync(portfolio.Links);
             await _imagemService.UpdateImagemAsync(portfolio.Imagens);
         }
-        public Task DeletePortfolioAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Models;
+using VitriniDigital.Service.Business;
 
 namespace VitriniDigital.Controllers
 {
@@ -10,58 +12,100 @@ namespace VitriniDigital.Controllers
     public class CupomController : ControllerBase
     {
         private readonly ILogger<CupomController> _logger;
-        private readonly ICupomService _CupomService;
+        private readonly ICupomService _cupomService;
         public CupomController(ILogger<CupomController> logger,
-                               ICupomService CupomService
-            )
+                               ICupomService cupomService)
         {
             _logger = logger;
-            _CupomService = CupomService;
+            _cupomService = cupomService;
         }
 
-        [Authorize]
-        [HttpGet("estabelecimento/{id:int}")]
-        public async Task<IActionResult> GetByIdEstabelecimento(Guid id)
-        {
-            var ret = await _CupomService.GetAllCupomsAsync(/*Guid id*/);
-            return Ok(ret);
-        }
 
-        [Authorize]
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var ret = await _CupomService.GetCupomByIdAsync(id);
-
-            return Ok(ret);
-        }
-
-        [Authorize]
+        //[Authorize]
         [HttpPost(Name = "PostCupom")]
-        public async Task<IActionResult> Post([FromBody]CupomDTO Cupom)
+        public async Task<IActionResult> Post([FromBody] CupomDTO Cupom)
         {
-            if (Cupom == null)
-                return BadRequest();
+            try
+            {
+                if (Cupom == null)
+                    return BadRequest();
 
-            var ret = await _CupomService.AddCupomAsync(Cupom);
-            if (ret)
-                return Ok();
-
-            return BadRequest();
+                return Ok(await _cupomService.AddCupomAsync(Cupom));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Post));
+                return StatusCode(500);
+            }
         }
 
-        [Authorize]
+        //[Authorize]
+        [HttpGet("estabelecimento/{id:guid}")]
+        public async Task<IActionResult> GetByIdEstabelecimento(string id)
+        {
+            var ret = await _cupomService.GetCupomByIdEstabelecimentoAsync(id);
+            return Ok(ret);
+        }
+
+        //[Authorize]
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            try
+            {
+                var ret = await _cupomService.GetCupomByIdAsync(id);
+                if (ret != null)
+                    return Ok(ret);
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(GetById));
+                return StatusCode(500);
+            }
+        }
+
+        //[Authorize]
         [HttpPut(Name = "PutCupom")]
-        public async Task<IActionResult> Put()
+        public async Task<IActionResult> Put([FromBody] Cupom cupom)
         {
-            return Ok();
+            try
+            {
+                if (cupom == null)
+                    return BadRequest();
+
+                if (await _cupomService.UpdateCupomAsync(cupom))
+                    return Ok();
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Put));
+                return StatusCode(500);
+            }
         }
 
-        [Authorize]
-        [HttpDelete(Name = "DeleteCupom")]
-        public async Task<IActionResult> Delete()
+        //[Authorize]
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(string id)
         {
-            return Ok();
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                    return BadRequest();
+
+                if (await _cupomService.DesativarCupomAsync(id))
+                    return Ok();
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, nameof(Delete));
+                return StatusCode(500);
+            }
         }
     }
 }

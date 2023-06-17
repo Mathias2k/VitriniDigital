@@ -26,9 +26,9 @@ namespace VitriniDigital.Service.Business
         {
             await _enderecoRepo.UpdateAsync(endereco);
         }
-        public async Task DeleteEnderecoAsync(string id)
-        {
-            await _enderecoRepo.DeleteAsync(id);
-        }
+        //public async Task DeleteEnderecoAsync(string id)
+        //{
+        //    await _enderecoRepo.DeleteAsync(id);
+        //}
     }
 }

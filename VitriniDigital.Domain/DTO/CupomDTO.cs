@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace VitriniDigital.Domain.DTO
 {
     public class CupomDTO
     {
+        [Required]
         public string IdEstabelecimento { get; set; }
+
+        [Required]
         public DateTime DataValidade { get; set; }
-        public int Desconto { get; set; }
-        public string Descricao { get; set; }
-        
-        //public List<ImagemDTO> ImagensDto { get; set; }
-        //public List<LinkDTO> LinksDto { get; set; }
+
+        [Required]
+        public decimal Desconto { get; set; }
+
+        [Required]
+        public string Descricao { get; set; }       
     }
 }

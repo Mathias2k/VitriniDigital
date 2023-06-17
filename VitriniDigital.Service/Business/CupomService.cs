@@ -1,44 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Service.Business
 {
     public class CupomService : ICupomService
     {
-        private readonly ICupomRepository _CupomRepo;
-        public CupomService(ICupomRepository CupomRepo)
+        private readonly ICupomRepository _cupomRepo;
+        public CupomService(ICupomRepository cupomRepo)
         {
-            _CupomRepo = CupomRepo;
+            _cupomRepo = cupomRepo;
         }
-        public async Task<bool> AddCupomAsync(CupomDTO CupomDto)
+        public async Task<ResponseResult> AddCupomAsync(CupomDTO CupomDto)
         {
-            var portfolio = Cupom.CupomFactory.AdicionarCupom(CupomDto.IdEstabelecimento);
-            await _CupomRepo.InsertAsync(portfolio);
+            var cupom = Cupom.CupomFactory.AdicionarCupom(CupomDto);
+            await _cupomRepo.InsertAsync(cupom);
 
-            return true;
+            ResponseResult rr = new()
+            {
+                Id = cupom.Id,
+                Message = "Cupom criado com sucesso."
+            };
+
+            return rr;
         }
         public async Task<IEnumerable<Cupom>> GetAllCupomsAsync()
         {
-            return await _CupomRepo.SelectAllAsync();
+            return await _cupomRepo.SelectAllAsync();
         }
-
-        public async Task<Cupom> GetCupomByIdAsync(Guid id)
+        public async Task<IEnumerable<Cupom>> GetCupomByIdEstabelecimentoAsync(string idEstab)
         {
-            return new Cupom();
+            var cupons = await _cupomRepo.SelectByIdEstabelecimentoAsync(idEstab);
+
+            cupons = cupons.Where(x => x.DataValidade.Date >= DateTime.Now.Date && x.Ativo);
+            return cupons;
         }
-
-        public async Task UpdateCupomAsync(CupomDTO userDto)
+        public async Task<Cupom> GetCupomByIdAsync(string id)
         {
+            var cupom = await _cupomRepo.SelectByIdAsync(id);
 
+            return cupom.DataValidade.Date >= DateTime.Now.Date && 
+                   cupom.Ativo ? cupom : null;
         }
-        public async Task ReportarProblemaAsync()
+        public async Task<bool> UpdateCupomAsync(Cupom cupom)
         {
-
+            return await _cupomRepo.UpdateCupomAsync(cupom);
+        }
+        public async Task<bool> DesativarCupomAsync(string id)
+        {
+            return await _cupomRepo.DeleteAsync(id);
         }
     }
 }

@@ -17,6 +17,9 @@ namespace VitriniDigital.Domain.Models
         public string Telefone2 { get; set; }
 
         [JsonIgnore]
+        public bool Ativo { get; private set; }
+
+        [JsonIgnore]
         public string IdEndereco { get; private set; }
         public Endereco Endereco { get; set; }
 
@@ -26,7 +29,7 @@ namespace VitriniDigital.Domain.Models
 
         [JsonIgnore]
         public string IdCupons { get; private set; }
-        public List<Cupom> Cupons { get; set; }
+        public IEnumerable<Cupom> Cupons { get; set; }
         public static class EstabelecimentoFactory
         {
             public static Estabelecimento AdicionarEstabelecimento(EstabelecimentoDTO estabDto,

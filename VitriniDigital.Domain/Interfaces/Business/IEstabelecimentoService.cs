@@ -13,6 +13,6 @@ namespace VitriniDigital.Domain.Interfaces.Business
         Task<Estabelecimento> GetEstabelecimentosByIdUsuarioAsync(string id);
         Task<IEnumerable<Estabelecimento>> GetAllEstabelecimentosAsync();
         Task<bool> UpdateEstabelecimentoAsync(Estabelecimento estab);
-        Task<bool> DeleteEstabelecimentoAsync(string id);
+        Task<bool> DesativarEstabelecimentoAsync(string id);
     }
 }
