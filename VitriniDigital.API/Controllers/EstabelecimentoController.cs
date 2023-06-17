@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
+using VitriniDigital.Domain.Models.Exception;
 using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.API.Controllers
@@ -13,15 +15,18 @@ namespace VitriniDigital.API.Controllers
     public class EstabelecimentoController : ControllerBase
     {
         private readonly ILogger<EstabelecimentoController> _logger;
+        private readonly ILogExceptionRepository _logException;
         private readonly IEstabelecimentoService _estabService;
         public EstabelecimentoController(ILogger<EstabelecimentoController> logger,
+                                         ILogExceptionRepository logException,
                                          IEstabelecimentoService estabService)
         {
             _estabService = estabService;
+            _logException = logException;
             _logger = logger;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         [ProducesResponseType(400)]
@@ -33,7 +38,9 @@ namespace VitriniDigital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Post));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
@@ -45,8 +52,6 @@ namespace VitriniDigital.API.Controllers
         {
             try
             {
-                _logger.LogInformation("passei aqui");
-
                 var respose = await _estabService.GetAllEstabelecimentosAsync();
                 if (respose.Any())
                     return Ok(respose);
@@ -55,7 +60,9 @@ namespace VitriniDigital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Get));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
@@ -76,12 +83,14 @@ namespace VitriniDigital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(GetById));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -100,12 +109,14 @@ namespace VitriniDigital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Put));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -124,7 +135,9 @@ namespace VitriniDigital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Delete));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }

@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
+using VitriniDigital.Domain.Models.Exception;
 using VitriniDigital.Service.Business;
 
 namespace VitriniDigital.Controllers
@@ -12,16 +14,19 @@ namespace VitriniDigital.Controllers
     public class CupomController : ControllerBase
     {
         private readonly ILogger<CupomController> _logger;
+        private readonly ILogExceptionRepository _logException;
         private readonly ICupomService _cupomService;
         public CupomController(ILogger<CupomController> logger,
+                               ILogExceptionRepository logException,
                                ICupomService cupomService)
         {
             _logger = logger;
+            _logException = logException;
             _cupomService = cupomService;
         }
 
 
-        //[Authorize]
+        [Authorize]
         [HttpPost(Name = "PostCupom")]
         public async Task<IActionResult> Post([FromBody] CupomDTO Cupom)
         {
@@ -34,12 +39,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Post));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("estabelecimento/{id:guid}")]
         public async Task<IActionResult> GetByIdEstabelecimento(string id)
         {
@@ -47,7 +54,7 @@ namespace VitriniDigital.Controllers
             return Ok(ret);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -61,12 +68,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(GetById));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut(Name = "PutCupom")]
         public async Task<IActionResult> Put([FromBody] Cupom cupom)
         {
@@ -82,12 +91,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Put));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -103,7 +114,9 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Delete));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }

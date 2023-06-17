@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
+using VitriniDigital.Domain.Interfaces.Repos;
+using VitriniDigital.Domain.Models.Exception;
 using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Controllers
@@ -12,15 +14,17 @@ namespace VitriniDigital.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;
+        private readonly ILogExceptionRepository _logException;
         private readonly IUsuarioService _usuarioService;
         public UsuarioController(ILogger<UsuarioController> logger,
+                                 ILogExceptionRepository logException,
                                  IUsuarioService usuarioService)
         {
             _logger = logger;
+            _logException = logException;
             _usuarioService = usuarioService;
         }
 
-        //[Authorize]
         [HttpPost(Name = "PostUsuario")]
         [ProducesResponseType(typeof(ResponseResult), 200)]
         [ProducesResponseType(400)]
@@ -35,14 +39,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Post));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //criar ReativarConta
-
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -54,12 +58,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Get));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -75,12 +81,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(GetById));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{username}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -96,12 +104,14 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(GetByUserName));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -120,7 +130,9 @@ namespace VitriniDigital.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, nameof(Delete));
+                string rota = $"{Request.Path.Value} -> {ControllerContext.ActionDescriptor.ActionName}";
+                _logger.LogError(ex, rota);
+                await _logException.AddErrorAsync(new LogException(rota, ex.Message));
                 return StatusCode(500);
             }
         }
