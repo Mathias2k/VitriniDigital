@@ -89,7 +89,6 @@ namespace VitriniDigital.Infra.Data.HttpClient
 
             return keyCloackAdminToken.access_token;
         }
-
         public async Task<string> GetNormalTokenAsync(UsuarioDTO user)
         {
             var nvc = new List<KeyValuePair<string, string>>

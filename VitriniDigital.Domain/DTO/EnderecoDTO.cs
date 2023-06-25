@@ -10,7 +10,5 @@
         public string Cidade { get; set; }
         public string Bairro { get; set; }
         public string UF { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
     }
 }
