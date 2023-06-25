@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.Config;
+using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Models.Login;
 
@@ -21,7 +22,6 @@ namespace VitriniDigital.Infra.Data.HttpClient
             _clientFactory = clientFactory;
             _config = config;
         }
-
         public async Task<object> HttpClientPostAsync(string url, object obj, string token = null)
         {
             if (obj is null)
@@ -74,7 +74,7 @@ namespace VitriniDigital.Infra.Data.HttpClient
             var nvc = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("grant_type", _config.GrantType),
-                new KeyValuePair<string, string>("client_id", _config.Client_ID),
+                new KeyValuePair<string, string>("client_id", _config.AdminClientID),
                 new KeyValuePair<string, string>("username", _config.UserName),
                 new KeyValuePair<string, string>("password", _config.Password)
             };
@@ -88,6 +88,29 @@ namespace VitriniDigital.Infra.Data.HttpClient
             var keyCloackAdminToken = JsonSerializer.Deserialize<KeyCloakAdminToken>(json);
 
             return keyCloackAdminToken.access_token;
+        }
+
+        public async Task<string> GetNormalTokenAsync(UsuarioDTO user)
+        {
+            var nvc = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", _config.GrantType),
+                new KeyValuePair<string, string>("client_id", _config.NormalUserClientID),
+                new KeyValuePair<string, string>("username", user.Email),
+                new KeyValuePair<string, string>("password", user.Password),
+                new KeyValuePair<string, string>("client_secret", "JXCgUy5wvOet9jN6QG6XIbHJrQUaHTVd")
+            };
+            var client = _clientFactory.CreateClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, _config.UrlGetNormalToken) { Content = new FormUrlEncodedContent(nvc) };
+
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            //var json = 
+            return await response.Content.ReadAsStringAsync();
+            // var keyCloackAdminToken = JsonSerializer.Deserialize<KeyCloakAdminToken>(json);
+
+            //return keyCloackAdminToken.access_token;
         }
     }
 }
