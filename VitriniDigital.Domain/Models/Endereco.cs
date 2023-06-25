@@ -30,9 +30,7 @@ namespace VitriniDigital.Domain.Models
                     PontoReferencia = endDto.PontoReferencia,
                     Cidade = endDto.Cidade,
                     Bairro = endDto.Bairro,
-                    UF = endDto.UF,
-                    Latitude = endDto.Latitude,
-                    Longitude = endDto.Longitude 
+                    UF = endDto.UF
                 };
 
                 return endereco;
