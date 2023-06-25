@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using VitriniDigital.Domain.DTO;
 
 namespace VitriniDigital.Domain.Interfaces.Business
 {
@@ -9,5 +10,6 @@ namespace VitriniDigital.Domain.Interfaces.Business
         Task<HttpResponseMessage> HttpClientGetAsync(string url, string token = null);
         Task HttpClientPutAsync(string url, object obj, string token = null);
         Task<string> GetAdminTokenAsync();
+        Task<string> GetNormalTokenAsync(UsuarioDTO user);
     }
 }

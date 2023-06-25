@@ -4,10 +4,10 @@ namespace VitriniDigital.Domain.Models
 {
     public class Usuario 
     {
-        public string Id { get; private set; }
+        public string Id { get; set; }
         public string Nome { get; set; }
         public string UserName { get; set; }
-        public bool Ativo { get; private set; }
+        public bool Ativo { get; set; }
         public Estabelecimento Estabelecimento { get; set; }
         public static class UsuarioFactory
         {
