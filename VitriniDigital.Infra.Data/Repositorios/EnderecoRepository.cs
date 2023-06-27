@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.DTO;
@@ -34,22 +35,24 @@ namespace VitriniDigital.Infra.Data.Repositorios
         }
         public async Task<string> InsertAsync(Endereco end)
         {
-            var param = new
+            try
             {
-                ID = end.Id,
-                Logradouro = end.Logradouro,
-                CEP = end.CEP,
-                Complemento = end.Complemento,
-                Numero = end.Numero,
-                PontoReferencia = end.PontoReferencia,
-                Cidade = end.Cidade,
-                Bairro = end.Bairro,
-                UF = end.UF,
-                Latitude = end.Latitude,
-                Longitude = end.Longitude
-            };
+                var param = new
+                {
+                    ID = end.Id,
+                    Logradouro = end.Logradouro,
+                    CEP = end.CEP,
+                    Complemento = end.Complemento,
+                    Numero = end.Numero,
+                    PontoReferencia = end.PontoReferencia,
+                    Cidade = end.Cidade,
+                    Bairro = end.Bairro,
+                    UF = end.UF,
+                    Latitude = end.Latitude,
+                    Longitude = end.Longitude
+                };
 
-            return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Endereco
+                return await _session.Connection.QuerySingleAsync<string>(@"INSERT INTO tbl_Endereco
                                                                             (Id, Logradouro, CEP, Complemento, Numero,
                                                                              PontoReferencia, Cidade, Bairro, UF,
                                                                              Latitude, Longitude)
@@ -57,7 +60,12 @@ namespace VitriniDigital.Infra.Data.Repositorios
                                                                          VALUES(@ID, @Logradouro, @CEP, @Complemento, @Numero,
                                                                                 @PontoReferencia, @Cidade, @Bairro, @UF,
                                                                                 @Latitude, @Longitude)",
-                                                                     param, _session.Transaction);
+                                                                         param, _session.Transaction);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         public async Task<int> UpdateAsync(Endereco end)
         {

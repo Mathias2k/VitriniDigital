@@ -33,8 +33,8 @@ namespace VitriniDigital.Service.Business
             if (localizacaoGoogle != null)
                 if (localizacaoGoogle.results.Any())
                 {
-                    endereco.Latitude = localizacaoGoogle.results[0].geometry.location.lat.ToString();
-                    endereco.Latitude = localizacaoGoogle.results[0].geometry.location.lng.ToString();
+                    endereco.Latitude = localizacaoGoogle.results[0].geometry.location.lat.ToString() ?? "00000";
+                    endereco.Longitude = localizacaoGoogle.results[0].geometry.location.lng.ToString() ?? "00000";
                 }
 
             return await _enderecoRepo.InsertAsync(endereco);

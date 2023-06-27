@@ -5,7 +5,6 @@ using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
 using VitriniDigital.Domain.Models.Exception;
-using VitriniDigital.Service.Business;
 
 namespace VitriniDigital.Controllers
 {
@@ -46,7 +45,6 @@ namespace VitriniDigital.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("estabelecimento/{id:guid}")]
         public async Task<IActionResult> GetByIdEstabelecimento(string id)
         {
@@ -54,7 +52,6 @@ namespace VitriniDigital.Controllers
             return Ok(ret);
         }
 
-        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(string id)
         {

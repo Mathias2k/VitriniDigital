@@ -12,9 +12,11 @@ namespace VitriniDigital.Tests
     public class UnitTest1
     {
         //readonly FakeDadosFixture _usuarioTestBogus;
+        //readonly ApiConfiguration _config;
         //public UnitTest1(FakeDadosFixture usuarioTestBogus)
         //{
         //    _usuarioTestBogus = usuarioTestBogus;
+        //    _config = new ApiConfiguration();
         //}
 
         //[Fact(DisplayName = "Adicionar Usuario com Sucesso")]
@@ -31,10 +33,18 @@ namespace VitriniDigital.Tests
         //    var userRepo = new Mock<IUsuarioRepository>();
         //    var estabService = new Mock<IEstabelecimentoService>();
         //    var httpClient = new Mock<IHttpClienteService>();
-        //    var apiConfig = new Mock<ApiConfiguration>();
+        //    //configurar setup e return para Http Post e Get
 
-        //    var userService = new UsuarioService(userRepo.Object, estabService.Object, 
-        //                                         httpClient.Object, apiConfig.Object);
+        //    _config.UrlGetUserByUserName = $"http://20.201.116.67/admin/realms/marraia/users/?username={userDto.Email}";
+        //    _config.UrlCreateUserKeyCloak = "http://20.201.116.67/admin/realms/marraia/users";
+        //    _config.UrlGetAdminToken = "http://20.201.116.67/realms/master/protocol/openid-connect/token";
+        //    _config.GrantType = "password";
+        //    _config.AdminClientID = "admin-cli";
+        //    _config.UserName = "admin";
+        //    _config.Password = "7OhuRC4qKg!+ljRfrs0";
+
+        //    var userService = new UsuarioService(userRepo.Object, estabService.Object,
+        //                                         httpClient.Object, _config);
 
         //    // Act
         //    await userService.AddUsuarioAsync(userDto);
