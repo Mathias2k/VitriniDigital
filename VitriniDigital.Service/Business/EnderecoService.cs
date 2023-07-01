@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.Config;
 using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
-using VitriniDigital.Domain.Models.Login;
 
 namespace VitriniDigital.Service.Business
 {
@@ -37,6 +34,9 @@ namespace VitriniDigital.Service.Business
                     endereco.Longitude = localizacaoGoogle.results[0].geometry.location.lng.ToString() ?? "00000";
                 }
 
+            //TODO CEP
+            endereco.CEP = "01212001";
+
             return await _enderecoRepo.InsertAsync(endereco);
         }
         public async Task<Endereco> GetEnderecoByIdAsync(string idEnd)
@@ -49,10 +49,15 @@ namespace VitriniDigital.Service.Business
         }
         private async Task<GoogleMapsResponse> GetLatituteAndLongitudeAsync(EnderecoDTO endDto)
         {
-            string urlGetLocalizacao = _configuration.UrlGetLocalizacao.Replace("LOCREPLACE", endDto.CEP);
+            string urlGetLocalizacao = _configuration.UrlGetLocalizacao.Replace("LOCREPLACE", endDto.Logradouro);
             var response = await _httpClienteService.HttpClientGetAsync(urlGetLocalizacao);
 
             return JsonSerializer.Deserialize<GoogleMapsResponse>(response.Content.ReadAsStream());
+        }
+
+        private async Task GetCEP()
+        {
+            //TO DO
         }
 
         //public async Task DeleteEnderecoAsync(string id)
