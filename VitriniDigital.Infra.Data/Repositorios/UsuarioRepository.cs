@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VitriniDigital.Domain.Interfaces;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
 using VitriniDigital.Infra.Data.Db;
@@ -10,9 +11,12 @@ namespace VitriniDigital.Infra.Data.Repositorios
     public class UsuarioRepository : IUsuarioRepository
     {
         private DbSession _session;
+        //private readonly IUnitOfWork _unit;
         public UsuarioRepository(DbSession session)
+            //,IUnitOfWork unit)
         {
             _session = session;
+            //_unit = unit;
         }
         public async Task<IEnumerable<Usuario>> SelectAllAsync()
         {

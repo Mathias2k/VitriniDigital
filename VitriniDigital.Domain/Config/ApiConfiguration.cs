@@ -4,7 +4,7 @@
     {
         public string ConnectionString { get; set; }
         public string UrlGetLocalizacao { get; set; }
-        public string UrlBuscadorCEP { get; set; }
+        public string UrlGetCEP { get; set; }
         public string UrlGetNormalToken { get; set; }
         public string UrlGetAdminToken { get; set; }
         public string UrlCreateUserKeyCloak { get; set; }

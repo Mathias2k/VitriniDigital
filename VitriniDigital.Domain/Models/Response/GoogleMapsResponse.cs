@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VitriniDigital.Domain.Models
+namespace VitriniDigital.Domain.Models.Response
 {
     public class GoogleMapsResponse
     {

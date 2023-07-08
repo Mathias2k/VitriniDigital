@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VitriniDigital.Infra.Data\VitriniDigital.Infra.Data.csproj" />
     <ProjectReference Include="..\VitriniDigital.Service\VitriniDigital.Service.csproj" />
   </ItemGroup>
 

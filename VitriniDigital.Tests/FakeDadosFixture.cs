@@ -13,12 +13,12 @@ namespace VitriniDigital.Tests
         {
             return GerarUsuario(1, true).FirstOrDefault();
         }
-        public IEnumerable<Usuario> ObterUsuariosVariados()
+        public IEnumerable<Usuario> ObterUsuariosVariados(int qtdeCriar)
         {
             var user = new List<Usuario>();
 
-            user.AddRange(GerarUsuario(50, true).ToList());
-            user.AddRange(GerarUsuario(50, false).ToList());
+            user.AddRange(GerarUsuario(qtdeCriar, true).ToList());
+            //user.AddRange(GerarUsuario(qtdeCriar, false).ToList());
 
             return user;
         }
