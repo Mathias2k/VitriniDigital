@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using VitriniDigital.Domain.Config;
@@ -6,6 +7,7 @@ using VitriniDigital.Domain.DTO;
 using VitriniDigital.Domain.Interfaces.Business;
 using VitriniDigital.Domain.Interfaces.Repos;
 using VitriniDigital.Domain.Models;
+using VitriniDigital.Domain.Models.Response;
 
 namespace VitriniDigital.Service.Business
 {
@@ -25,6 +27,8 @@ namespace VitriniDigital.Service.Business
         public async Task<string> AddEnderecoAsync(EnderecoDTO endDto)
         {
             var endereco = Endereco.EnderecoFactory.AdicionarEstabelecimento(endDto);
+
+            //get lat and long
             var localizacaoGoogle = await GetLatituteAndLongitudeAsync(endDto);
 
             if (localizacaoGoogle != null)
@@ -34,8 +38,15 @@ namespace VitriniDigital.Service.Business
                     endereco.Longitude = localizacaoGoogle.results[0].geometry.location.lng.ToString() ?? "00000";
                 }
 
-            //TODO CEP
-            endereco.CEP = "01212001";
+            //get cep
+            if (string.IsNullOrEmpty(endDto.CEP))
+            {
+                var lstCeps = await GetCEPAsync(endDto);
+                if (lstCeps.Any())
+                    endereco.CEP = lstCeps.FirstOrDefault().cep.Replace("-", "");
+                else
+                    endereco.CEP = "00000000";
+            }
 
             return await _enderecoRepo.InsertAsync(endereco);
         }
@@ -54,10 +65,15 @@ namespace VitriniDigital.Service.Business
 
             return JsonSerializer.Deserialize<GoogleMapsResponse>(response.Content.ReadAsStream());
         }
-
-        private async Task GetCEP()
+        private async Task<List<CepResponse>> GetCEPAsync(EnderecoDTO endDto)
         {
-            //TO DO
+            string urlGetCEP = _configuration.UrlGetCEP
+                                    .Replace("UFREPLACE", endDto.UF)
+                                    .Replace("CIDADEREPLACE", endDto.Cidade)
+                                    .Replace("LOGRADOUROREPLACE", endDto.Logradouro);
+
+            var response = await _httpClienteService.HttpClientGetAsync(urlGetCEP);
+            return JsonSerializer.Deserialize<List<CepResponse>>(response.Content.ReadAsStream());
         }
 
         //public async Task DeleteEnderecoAsync(string id)

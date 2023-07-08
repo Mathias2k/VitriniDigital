@@ -37,14 +37,14 @@ namespace VitriniDigital.Service.Business
                                                          await _httpClientService.GetAdminTokenAsync());
 
             string url = $"{_config.UrlGetUserByUserName}{userDto.Email}";
-            var response = await _httpClientService.HttpClientGetAsync(url, await _httpClientService.GetAdminTokenAsync());
+            var userKC = await _httpClientService.HttpClientGetKCUserAsync(url, await _httpClientService.GetAdminTokenAsync());
 
-            var userKC = JsonSerializer.Deserialize<List<KeyCloackGetUser>>(response.Content.ReadAsStream());
+            //var userKC = JsonSerializer.Deserialize<List<KeyCloackGetUser>>(response.Content.ReadAsStream());
 
-            if (userKC?.Count == 0)
-                return new ResponseResult();
+            //if (userKC?.Count == 0)
+            //    return new ResponseResult();
 
-            var usuario = Usuario.UsuarioFactory.AdicionarUsuario(userKC.FirstOrDefault());
+            var usuario = Usuario.UsuarioFactory.AdicionarUsuario(userKC);
             await _usuarioRepo.InsertAsync(usuario);
 
             ResponseResult rr = new()

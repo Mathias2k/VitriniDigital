@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -53,6 +54,22 @@ namespace VitriniDigital.Infra.Data.HttpClient
             response.EnsureSuccessStatusCode();
 
             return response;
+        }
+        public async Task<KeyCloackGetUser> HttpClientGetKCUserAsync(string url, string token = null)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "application/json");
+
+            var client = _clientFactory.CreateClient();
+            if (!string.IsNullOrEmpty(token))
+                client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var userKC = JsonSerializer.Deserialize<List<KeyCloackGetUser>>(response.Content.ReadAsStream());
+            return userKC.FirstOrDefault();
         }
         public async Task HttpClientPutAsync(string url, object obj, string token = null)
         {
